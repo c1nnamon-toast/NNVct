@@ -1,0 +1,8 @@
+1. Transfer to Flask
+2. Add colors for positive and negative weigts
+3. Take input from real NN 
+4. Make rectangles for each layer 
+5. Add onclick action for each neuron 
+
+--------------------------------------
+?? Illustrate "Flow" of the Network forward (and backward if present)
