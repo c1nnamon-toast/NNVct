@@ -1,7 +1,8 @@
 var cy = cytoscape({
     container: document.getElementById('cy'),
-    elements: [],  // Initially, there are no elements
-    style: [
+    elements: [],  
+    style: 
+    [
         {
             selector: 'node',
             style: {
@@ -9,6 +10,7 @@ var cy = cytoscape({
                 'overlay-opacity': 0,
             }
         },
+
         {
             selector: 'node:active',
             style: {
@@ -20,11 +22,11 @@ var cy = cytoscape({
         {
             selector: 'edge',
             style: {
-                'line-color': 'black',
-                'line-opacity': 1.0,
+                'line-color': 'data(color)', // Use data attributes for color
+                'line-opacity': 'data(opacity)', // Use data attributes for opacity
+                // ... other styles for edges ...
             }
         },
-
 
         {
             selector: 'node[id^="redNode"]',
@@ -33,6 +35,7 @@ var cy = cytoscape({
                 'overlay-opacity': 0,
             }
         },
+
         {
             selector: 'node[id^="orangeNode"]',
             style: {
@@ -41,12 +44,13 @@ var cy = cytoscape({
             }
         }
     ],
+
     layout: {
         name: 'grid'
     }
 });
 
-// Define the styles for faded elements and highlighted edges
+// Highligh edges & fade elements
 cy.style()
     .selector('.faded')
     .css({
@@ -81,7 +85,8 @@ cy.on('mouseout', 'node', function() {
 
 
 function generateGraph() {
-    // Fetch data from Flask
+    var startTime = performance.now();
+    
     fetch('/layout', {
         method: 'POST',
         body: new URLSearchParams({
@@ -92,7 +97,8 @@ function generateGraph() {
         }
     })
     .then(response => response.json())
-    .then(data => {
+    .then(data => 
+    {  
 
         cy.elements().remove();
 
@@ -126,37 +132,25 @@ function generateGraph() {
             });
         }
 
-        // Connect nodes
-        for (let i = 0; i < numRedNodes; i++) {
-            for (let j = 0; j < numOrangeNodes; j++) {
-                let edge = cy.add({
-                    group: 'edges',
-                    data: {
-                        id: 'edge' + i + '-' + j,
-                        source: 'redNode' + i,
-                        target: 'orangeNode' + j
-                    }
-                });
-                let randomOpacity = 2 * (Math.random() - 0.5);  // Generates a random number between -1 and 1
-                if (randomOpacity < 0) {
-                    edge.style({
-                        'line-color': 'red',
-                        'line-opacity': Math.abs(randomOpacity)  // Use the absolute value to ensure opacity is positive
-                    });
-                } else {
-                    edge.style({
-                        'line-color': 'green',
-                        'line-opacity': randomOpacity
-                    });
-                }
-            }
-        }
+        // When adding edges, you do not need to specify the style directly
+        data.edges.forEach(edgeData => {
+            cy.add({
+                group: 'edges',
+                data: edgeData.data,
+                // Do not apply style here
+            });
+        });
+
+        // Log frontend rendering time
+        var endTime = performance.now(); // End frontend timing
+        console.log('Frontend rendering duration:', (endTime - startTime) / 1000);
+
     });
+
 }
 
 
 document.getElementById('generateGraph').addEventListener('click', generateGraph);
-
 
 document.getElementById('returnMainNode').addEventListener('click', function () {
     window.location.href = "/abstract_layout";
