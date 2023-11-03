@@ -21,10 +21,11 @@ In search of a good solution
             Lack of flexibility (networkx)
             Suitable solutions ()
 
-    In search of library in order to handle backend of the framework (Flask, node.js, React, TS, raw JS)
+    In search of library to handle backend of the framework (Flask, node.js, React, TS, raw JS)
     So it could hande:
         Massive NNs (point to the definition of the DNN)
         3 abstract repsentations ()
+    Further optimisation (numpy vectorisation)
 
     and it will have enough functionality to show:
         Interactable edges with opacities, size control, color control and placement controll  

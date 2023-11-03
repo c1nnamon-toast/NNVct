@@ -8,7 +8,12 @@ document.addEventListener("DOMContentLoaded", function() {
     var cy = cytoscape({
         container: document.getElementById('cy'),
         elements: [
-            { data: { id: 'mainNode' } } // Removed the style property here
+            {
+                data: { id: 'mainNode' },
+                style: {
+                    'background-color': 'blue',
+                }
+            }
         ],
         style: [
             {
@@ -16,17 +21,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 style: {
                     'label': 'data(id)',
                     'overlay-opacity': 0,
-                    'width': 30.0,
-                    'height': 30.0,
-                    'background-color': 'blue'
+                    width: 30.0,
+                    height: 30.0,
                 }
             },
-            // {
-            //     selector: 'node#    ', // Specific selector for the mainNode
-            //     style: {
-            //         ,
-            //     }
-            // },
             {
                 selector: 'node:active',
                 style: {
@@ -46,16 +44,16 @@ document.addEventListener("DOMContentLoaded", function() {
         if (node.id() === 'mainNode') {
           window.location.href = '/layout';
         }
-    });
+      });
 
-    //loadGraphState();
+    loadGraphState();
 });
 
-// function loadGraphState() {
-//   var saved = localStorage.getItem('cyGraph');
-//   if (saved) {
-//     var elements = JSON.parse(saved);
-//     // Assume 'cy' is the cytoscape instance for the abstract layout
-//     cy.json(elements);  // Restore the state of the abstract graph
-//   }
-// }
+function loadGraphState() {
+  var saved = localStorage.getItem('cyGraph');
+  if (saved) {
+    var elements = JSON.parse(saved);
+    // Assume 'cy' is the cytoscape instance for the abstract layout
+    cy.json(elements);  // Restore the state of the abstract graph
+  }
+}

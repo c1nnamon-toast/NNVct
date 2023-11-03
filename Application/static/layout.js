@@ -8,18 +8,23 @@ var cy = cytoscape({
             style: {
                 'label': 'data(id)',
                 'overlay-opacity': 0,
+                'text-opacity': 0,
             }
         },
-        
         {
-            selector: 'edg',
+            selector: '.hover',
+            style: {
+                'text-opacity': 1 // Show text on hover
+            }
+        },
+        {
+            selector: 'edge',
             style: {
                 'line-color': 'data(color)', // Use data attributes for color
                 'line-opacity': 'data(opacity)', // Use data attributes for opacity
                 // ... other styles for edges ...
             }
         },
-
         {
             selector: 'node[id^="redNode"]',
             style: {
@@ -27,7 +32,6 @@ var cy = cytoscape({
                 'overlay-opacity': 0,
             }
         },
-
         {
             selector: 'node[id^="orangeNode"]',
             style: {
@@ -58,19 +62,23 @@ cy.style()
 
 // Moseover
 cy.on('mouseover', 'node', function(event) {
+    event.target.addClass('hover');
+    
     var node = event.target;
     
     // Select all elements and subtract the current node and its connected edges
     var others = cy.elements().subtract(node).subtract(node.connectedEdges());
     others.addClass('faded');
+
     
     // // Highlight the connected edges of the hovered node
     // node.connectedEdges().addClass('highlighted-edge');
 });
 
 // Mouseout
-cy.on('mouseout', 'node', function() {
+cy.on('mouseout', 'node', function(event) {
     cy.elements().removeClass('faded highlighted-edge');
+    event.target.removeClass('hover');
 });
 
 
@@ -140,8 +148,27 @@ function generateGraph() {
 }
 
 
+function saveGraphState() {
+  var elements = cy.json();  // Get the current state of the graph
+  localStorage.setItem('cyGraph', JSON.stringify(elements));  // Save it to localStorage
+}
+
 document.getElementById('generateGraph').addEventListener('click', generateGraph);
 
 document.getElementById('returnMainNode').addEventListener('click', function () {
-    window.location.href = "/abstract_layout";
+  saveGraphState();  // Save state before navigating away
+  window.location.href = "/abstract_layout";
 });
+
+// Load the graph state when the layout is loaded
+document.addEventListener("DOMContentLoaded", function() {
+  loadGraphState();
+});
+
+function loadGraphState() {
+  var saved = localStorage.getItem('cyGraph');
+  if (saved) {
+    var elements = JSON.parse(saved);
+    cy.json(elements);  // Restore the state of the graph
+  }
+}
