@@ -10,15 +10,7 @@ var cy = cytoscape({
                 'overlay-opacity': 0,
             }
         },
-
-        {
-            selector: 'node:active',
-            style: {
-                'overlay-opacity': 0.5,
-                'overlay-padding': 4
-            }
-        },
-
+        
         {
             selector: 'edge',
             style: {
@@ -64,21 +56,19 @@ cy.style()
     })
     .update();
 
-// Event handler for mouseover on nodes
+// Moseover
 cy.on('mouseover', 'node', function(event) {
     var node = event.target;
     
     // Select all elements and subtract the current node and its connected edges
     var others = cy.elements().subtract(node).subtract(node.connectedEdges());
-    
-    // Apply shadowing to everything else
     others.addClass('faded');
     
     // // Highlight the connected edges of the hovered node
     // node.connectedEdges().addClass('highlighted-edge');
 });
 
-// Event handler for mouseout
+// Mouseout
 cy.on('mouseout', 'node', function() {
     cy.elements().removeClass('faded highlighted-edge');
 });

@@ -1,0 +1,34 @@
+To have a great knowledge of the stuff before the start
+    Most common NN types (in order to analyze the current state & create my own solution)
+    Basic picturing of the whole concept 
+        !Point out that I am not making a sandbox!
+    How to provide the best user experience 
+
+What is the current state of NNVs in the world?
+    Overall lack of NNVs 
+    Unavailability of existing NNVs 
+        If they are free they are not open
+    Popular solutions and their cons (NN-SVG, Netron, TF sandbox, https://math.mit.edu/ennui/)
+        Cover only open-source options, only a few words about 
+
+With the knowledge gained
+    Better understanding of the project as a whole
+
+In search of a good solution
+    In search of a good visulizing tool 
+        Unsutable tools (mostly which specifically made for NN visulization)
+        Graph visulizing tools 
+            Lack of flexibility (networkx)
+            Suitable solutions ()
+
+    In search of library in order to handle backend of the framework (Flask, node.js, React, TS, raw JS)
+    So it could hande:
+        Massive NNs (point to the definition of the DNN)
+        3 abstract repsentations ()
+
+    and it will have enough functionality to show:
+        Interactable edges with opacities, size control, color control and placement controll  
+        Interactable nodes, also with colors and opacities, size control, and placement controll 
+        Possible to  
+
+Different possilbe repsentation
