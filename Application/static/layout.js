@@ -12,7 +12,7 @@ var cy = cytoscape({
         },
         
         {
-            selector: 'edge',
+            selector: 'edg',
             style: {
                 'line-color': 'data(color)', // Use data attributes for color
                 'line-opacity': 'data(opacity)', // Use data attributes for opacity
