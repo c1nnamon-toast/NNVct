@@ -14,12 +14,13 @@
 }
 
 #cy-container {
-    width: 800px; /* Adjust as needed */
-    height: 400px; /* Adjust as needed */
+    width: 100vw;
+    height: 100vh;
     overflow: auto;
 }
 
 #cy {
-    width: 1000px; /* Larger than container */
-    height: 800px; /* Larger than container */
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
 }

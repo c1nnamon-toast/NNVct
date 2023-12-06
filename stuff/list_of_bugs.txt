@@ -1,0 +1,1 @@
+After scrolling hover action is not there even if the mouse is on the node

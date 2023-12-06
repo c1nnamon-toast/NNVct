@@ -41,18 +41,26 @@ var cy = cytoscape({
             }
         },
 
-        {
-            selector: '.highlighted-edge',
-            style: {
-                'line-color': '#000',
-                'line-opacity': 1.0,
-                'width': 4 // This sets the content to an empty string
-            }
-        },
+        // {
+        //     selector: '.highlighted-edge',
+        //     style: {
+        //         //'line-color': '#000',
+        //         //'line-opacity': 1.0,
+        //         'width': 5 // This sets the content to an empty string
+        //     }
+        // },
+        // {
+        //     selector: '.highlighted-node',
+        //     style: {
+        //         //'line-color': '#000',
+        //         //'line-opacity': 1.0,
+        //         'border-style': 'solid' // This sets the content to an empty string
+        //     }
+        // },
         {
             selector: '.faded',
             style: {
-                'opacity': 0.25 // This sets the content to an empty string
+                'opacity': 0.12 // This sets the content to an empty string
             }
         }
     ],
@@ -85,7 +93,7 @@ document.getElementById('cy').addEventListener('wheel', function(event) {
 
     // Force Cytoscape to update its internal spatial indexing
     //cy.resize();
-
+    
     // Reset the scrolling flag after a delay
     clearTimeout(window.scrollTimeout);
     window.scrollTimeout = setTimeout(function() {
@@ -99,6 +107,8 @@ cy.on('mouseover', 'node', function(event) {
         var node = event.target;
         
         node.addClass('show-label');
+        //node.connectedEdges().addClass('highlighted-edge');
+        //node.addClass('highlighted-node');
         // Select all elements and subtract the current node and its connected edges
         var others = cy.elements().subtract(node).subtract(node.connectedEdges());
         others.addClass('faded');
@@ -111,7 +121,7 @@ cy.on('mouseover', 'node', function(event) {
 
 // Mouseout
 cy.on('mouseout', 'node', function(event) {
-    cy.elements().removeClass('faded highlighted-edge');
+    cy.elements().removeClass('show-label faded highlighted-edge');
     // event.target.removeClass('show-label');
 
     // console.log(node.classes());
@@ -141,8 +151,8 @@ function generateGraph() {
 
         var numRedNodes = data.numRedNodes;
         var numOrangeNodes = parseInt(document.getElementById('numOrangeNodes').value) || 1;
-        var spacingRed = containerHeight / (numRedNodes + 1);
-        var spacingOrange = containerHeight / (numOrangeNodes + 1);
+        //var spacingRed = containerHeight / (numRedNodes + 1);
+        //var spacingOrange = containerHeight / (numOrangeNodes + 1);
 
         for (let i = 0; i < numRedNodes; i++) {
             cy.add({
@@ -150,7 +160,7 @@ function generateGraph() {
                 data: { id: 'redNode' + i},
                 position: {
                     x: 0.25 * containerWidth,  // 25% from the left
-                    y: spacingRed * (i + 1)  // Space them out vertically
+                    y: containerHeight/20 * (i + 1)  // Space them out vertically
                 }
             });
         }
@@ -161,7 +171,7 @@ function generateGraph() {
                 data: { id: 'orangeNode' + j},
                 position: {
                     x: 0.75 * containerWidth,  // 75% from the left
-                    y: spacingOrange * (j + 1)  // Space them out vertically
+                    y: containerHeight/20 * (j + 1)  // Space them out vertically
                 }
             });
         }
