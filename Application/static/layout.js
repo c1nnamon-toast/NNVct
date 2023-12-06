@@ -62,8 +62,16 @@ var cy = cytoscape({
     wheelSensitivity: 0
 });
 
+var isScrolling = false;
+
 document.getElementById('cy').addEventListener('wheel', function(event) {
     event.preventDefault(); // Prevent the default scroll behavior
+
+    // Indicate that scrolling is happening
+    isScrolling = true;
+
+    // Remove any hover effects
+    cy.elements().removeClass('show-label faded highlighted-edge');
 
     var pan = cy.pan();
     var deltaY = event.deltaY;
@@ -75,21 +83,30 @@ document.getElementById('cy').addEventListener('wheel', function(event) {
         y: pan.y - deltaY
     });
 
-    cy.resize();
+    // Force Cytoscape to update its internal spatial indexing
+    //cy.resize();
+
+    // Reset the scrolling flag after a delay
+    clearTimeout(window.scrollTimeout);
+    window.scrollTimeout = setTimeout(function() {
+        isScrolling = false;
+    }, 200); // Adjust the time as needed
 });
 
 // Moseover
 cy.on('mouseover', 'node', function(event) {
-    var node = event.target;
-    
-    node.addClass('show-label');
-    // Select all elements and subtract the current node and its connected edges
-    var others = cy.elements().subtract(node).subtract(node.connectedEdges());
-    others.addClass('faded');
+    if (!isScrolling) {
+        var node = event.target;
+        
+        node.addClass('show-label');
+        // Select all elements and subtract the current node and its connected edges
+        var others = cy.elements().subtract(node).subtract(node.connectedEdges());
+        others.addClass('faded');
 
-    console.log(node.classes());
-    // // Highlight the connected edges of the hovered node
-    // node.connectedEdges().addClass('highlighted-edge');
+        console.log(node.classes());
+        // // Highlight the connected edges of the hovered node
+        // node.connectedEdges().addClass('highlighted-edge');
+    }
 });
 
 // Mouseout
