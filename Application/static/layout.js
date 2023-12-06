@@ -58,7 +58,24 @@ var cy = cytoscape({
     ],
     layout: {
         name: 'grid'
-    }
+    },
+    wheelSensitivity: 0
+});
+
+document.getElementById('cy').addEventListener('wheel', function(event) {
+    event.preventDefault(); // Prevent the default scroll behavior
+
+    var pan = cy.pan();
+    var deltaY = event.deltaY;
+    var deltaX = event.deltaX;
+
+    // Adjust the pan based on the scroll delta
+    cy.pan({
+        x: pan.x - deltaX,
+        y: pan.y - deltaY
+    });
+
+    cy.resize();
 });
 
 // Moseover

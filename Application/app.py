@@ -16,7 +16,7 @@ def layout():
         start_time = time.time();
 
 
-        num_red_nodes = 20
+        num_red_nodes = 10
         num_orange_nodes = int(request.form.get('numOrangeNodes', 1))
         num_edges = num_red_nodes * num_orange_nodes
 

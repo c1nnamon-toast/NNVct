@@ -13,10 +13,13 @@
     z-index: 20;
 }
 
-#cy {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-    display: block;
+#cy-container {
+    width: 800px; /* Adjust as needed */
+    height: 400px; /* Adjust as needed */
+    overflow: auto;
 }
 
+#cy {
+    width: 1000px; /* Larger than container */
+    height: 800px; /* Larger than container */
+}
