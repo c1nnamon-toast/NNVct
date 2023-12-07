@@ -2,6 +2,8 @@ from flask import Flask, render_template, jsonify, request
 import numpy as np
 import time
 
+from extract_NN1 import ultimate_knowledge as model_data # temporary
+
 app = Flask(__name__)
 
 
