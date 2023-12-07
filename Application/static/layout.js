@@ -62,7 +62,19 @@ var cy = cytoscape({
             style: {
                 'opacity': 0.12 // This sets the content to an empty string
             }
-        }
+        },
+        // {
+        //     selector: '.thin',
+        //     style: {
+        //         'width' : 2 // This sets the content to an empty string
+        //     }
+        // },
+        // {
+        //     selector: '.thick',
+        //     style: {
+        //         'width' : 4 // This sets the content to an empty string
+        //     }
+        // },
     ],
     layout: {
         name: 'grid'
@@ -107,7 +119,7 @@ cy.on('mouseover', 'node', function(event) {
         var node = event.target;
         
         node.addClass('show-label');
-        //node.connectedEdges().addClass('highlighted-edge');
+        //node.connectedEdges().addClass('thick');
         //node.addClass('highlighted-node');
         // Select all elements and subtract the current node and its connected edges
         var others = cy.elements().subtract(node).subtract(node.connectedEdges());
@@ -122,6 +134,7 @@ cy.on('mouseover', 'node', function(event) {
 // Mouseout
 cy.on('mouseout', 'node', function(event) {
     cy.elements().removeClass('show-label faded highlighted-edge');
+    //cy.elements().addClass('thin');
     // event.target.removeClass('show-label');
 
     // console.log(node.classes());
@@ -160,7 +173,7 @@ function generateGraph() {
                 data: { id: 'redNode' + i},
                 position: {
                     x: 0.25 * containerWidth,  // 25% from the left
-                    y: containerHeight/20 * (i + 1)  // Space them out vertically
+                    y: containerHeight/15 * (i + 1)  // Space them out vertically
                 }
             });
         }
@@ -171,7 +184,7 @@ function generateGraph() {
                 data: { id: 'orangeNode' + j},
                 position: {
                     x: 0.75 * containerWidth,  // 75% from the left
-                    y: containerHeight/20 * (j + 1)  // Space them out vertically
+                    y: containerHeight/15 * (j + 1)  // Space them out vertically
                 }
             });
         }

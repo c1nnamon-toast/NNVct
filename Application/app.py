@@ -43,6 +43,7 @@ def layout():
                     'target': f'orangeNode{j}',
                     'color': 'green' if float(weights_first_to_second[j][i]) > 0  else 'red',
                     'opacity': float(weights_first_to_second[j][i]),
+                    'width': 2
                 }
             }
             for i in range(num_red_nodes) for j in range(num_orange_nodes)
