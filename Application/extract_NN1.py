@@ -16,13 +16,18 @@ if __name__ == "__main__":
 
     for name, module in model.named_modules():
         class_name = type(module).__name__ 
-        ultimate_knowledge['Layers'].append((name, class_name));
+        if(class_name == 'Linear'):
+            ultimate_knowledge['Layers'].append((name, class_name, module.in_features, module.out_features));
 
-    for layer in model.children():
-        layer_weights = list(layer.parameters());
-        ultimate_knowledge['Weights'].append(layer_weights);
+    for i, layer in enumerate(model.children()):
+        list_of_tensors = list(layer.parameters());
+        #print(list_of_tensors)
+        layer_weights = [t.detach().tolist() for t in list_of_tensors];
+        ultimate_knowledge['Weights'].append(layer_weights)
 
-    json_data = json.dumps(ultimate_knowledge)
+        #ultimate_knowledge['Weights'].append(layer_weights);
 
-    url = "http://localhost:5000/hell"  # Replace with your Flask endpoint URL
-    response = requests.post(url, json=json_data)
+    #print(ultimate_knowledge);
+
+    with open('./NNVct/Application/model_info.json', 'w') as json_file:
+        json.dump(ultimate_knowledge, json_file)

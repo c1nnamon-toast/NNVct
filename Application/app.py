@@ -1,8 +1,10 @@
 from flask import Flask, render_template, jsonify, request
 import numpy as np
 import time
+import json
+import os
 
-from extract_NN1 import ultimate_knowledge as model_data # temporary
+#from extract_NN1 import ultimate_knowledge as model_data # temporary
 
 app = Flask(__name__)
 
@@ -17,29 +19,30 @@ def layout():
     if request.method == 'POST':
         start_time = time.time();
 
+        with open('C:/Users/darks/Documents/VNV/NNVct/Application/model_info.json', 'r') as json_file:
+            model_data = json.load(json_file)
+        # the new code should be here
 
-        num_red_nodes = 10
-        num_orange_nodes = int(request.form.get('numOrangeNodes', 1))
-        num_edges = num_red_nodes * num_orange_nodes
+        # Extract weights between first two layers
+        weights_first_to_second = model_data['Weights'][0][0] # Ignore biases for now
+        num_red_nodes = model_data['Layers'][0][2]
+        num_orange_nodes = model_data['Layers'][0][3]
 
-        # Generate random opacities between -1 and 1
-        random_opacities = 2 * (np.random.rand(num_edges) - 0.5)
-
-        # Convert to absolute values for opacity
-        opacities = np.abs(random_opacities)
+        #print(num_red_nodes, num_orange_nodes, weights_first_to_second)
 
         # Assign colors based on whether the original opacity was negative
-        colors = np.where(random_opacities < 0, 'red', 'green')
+        #colors = np.where(random_opacities < 0, 'red', 'green')
 
         # Create edges using NumPy arrays for colors and opacities
+
         edges = [
             {
                 'data': {
                     'id': f'edge{i}-{j}',
                     'source': f'redNode{i}',
                     'target': f'orangeNode{j}',
-                    'color': colors[i * num_orange_nodes + j],
-                    'opacity': float(opacities[i * num_orange_nodes + j])  # Cast to float for JSON serialization
+                    'color': 'green' if float(weights_first_to_second[j][i]) > 0  else 'red',
+                    'opacity': float(weights_first_to_second[j][i]),
                 }
             }
             for i in range(num_red_nodes) for j in range(num_orange_nodes)

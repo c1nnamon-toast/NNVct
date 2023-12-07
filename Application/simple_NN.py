@@ -5,10 +5,10 @@ import torch.nn.functional as F
 class SimpleMLP(nn.Module):
     def __init__(self):
         super(SimpleMLP, self).__init__()
-        self.fc1 = nn.Linear(1, 4)  # Input layer to first hidden layer
-        self.fc2 = nn.Linear(4, 8)  # First hidden layer to second hidden layer
-        self.fc3 = nn.Linear(8, 2)  # Second hidden layer to third hidden layer
-        self.fc4 = nn.Linear(2, 1)  # Third hidden layer to fourth hidden layer
+        self.fc1 = nn.Linear(10, 30)  # Input layer to first hidden layer
+        self.fc2 = nn.Linear(30, 70)  # First hidden layer to second hidden layer
+        self.fc3 = nn.Linear(70, 20)  # Second hidden layer to third hidden layer
+        self.fc4 = nn.Linear(20, 10)  # Third hidden layer to fourth hidden layer
 
     def forward(self, x):
         x = F.relu(self.fc1(x))

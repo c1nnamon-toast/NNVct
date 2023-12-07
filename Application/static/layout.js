@@ -150,7 +150,7 @@ function generateGraph() {
         var containerHeight = document.getElementById('cy').offsetHeight;
 
         var numRedNodes = data.numRedNodes;
-        var numOrangeNodes = parseInt(document.getElementById('numOrangeNodes').value) || 1;
+        var numOrangeNodes = data.numOrangeNodes;
         //var spacingRed = containerHeight / (numRedNodes + 1);
         //var spacingOrange = containerHeight / (numOrangeNodes + 1);
 

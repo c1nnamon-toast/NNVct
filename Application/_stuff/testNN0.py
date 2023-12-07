@@ -22,7 +22,7 @@ class MLP(nn.Module):
 
 
 if __name__ == "__main__":
-    data = pd.read_csv('./NN/skuska/Concrete_Data.csv')
+    data = pd.read_csv('C:/Users/darks/Documents/python/python_old/NeuralNetworks/NN/skuska/Concrete_Data.csv')
 
     X = data.iloc[:, :-1] 
     y = data.iloc[:, -1]
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters())
 
-    epochs = 100
+    epochs = 500
     best_val_loss = np.inf
     epochs_no_improve = 0
     n_epochs_stop = 25
@@ -80,9 +80,12 @@ if __name__ == "__main__":
 
     # best model
     model.load_state_dict(torch.load('best_model.pt'))
+    model.eval()
 
+    # for x in model.children():
+    #     print(len(list(x.parameters())[0]), len(list(x.parameters())))
+    #     break;
 
-    model.eval()  
     with torch.no_grad():
         test_outputs = model(X_test_tensor)
         test_loss = criterion(test_outputs, y_test_tensor)
