@@ -45,11 +45,11 @@ cy.on('tap', 'node', function(evt){
     var node = evt.target;
     var nodeId = node.id();
 
-    fetch('/process_node/' + nodeId)
+    fetch('/processNode/' + nodeId)
         .then(response => response.json())
         .then(data => {
             // Redirect to the visualization page with the calculated value
-            window.location.href = '/visualize_relu/' + nodeId + '?value=' + data.calculatedValue;
+            window.location.href = '/visualizeRelu/' + nodeId + '?value=' + data.calculatedValue;
         });
 });
 
