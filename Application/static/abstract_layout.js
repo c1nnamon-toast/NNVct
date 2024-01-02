@@ -1,61 +1,15 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Get the height of the container
-    var containerHeight = document.getElementById('cy').offsetHeight;
+document.addEventListener('DOMContentLoaded', function() {
+    const elements = JSON.parse(document.getElementById('elementsData').textContent);
 
-    // Calculate 50% of the container's height
-    var nodeSize = 0.01 * containerHeight;
-
-    var cy = cytoscape({
+    const cy = cytoscape({
         container: document.getElementById('cy'),
-        elements: [
-            { data: { id: 'mainNode' } } // Removed the style property here
-        ],
-        style: [
-            {
-                selector: 'node',
-                style: {
-                    'label': 'data(id)',
-                    'overlay-opacity': 0,
-                    'width': 30.0,
-                    'height': 30.0,
-                    'background-color': 'blue'
-                }
-            },
-            // {
-            //     selector: 'node#    ', // Specific selector for the mainNode
-            //     style: {
-            //         ,
-            //     }
-            // },
-            {
-                selector: 'node:active',
-                style: {
-                    'overlay-opacity': 0.5,  
-                    'overlay-color': '#888',  
-                    'overlay-padding': 4     
-                }
-            }
-        ],
+        elements: elements,
+        style: cytoscapeStyles, // your defined styles
         layout: {
-            name: 'grid'
+            name: 'grid', // or any other layout that fits your design
+            // other layout options
         }
     });
 
-    cy.on('tap', 'node', function(evt) {
-        var node = evt.target;
-        if (node.id() === 'mainNode') {
-          window.location.href = '/layout';
-        }
-    });
-
-    //loadGraphState();
+    // Additional Cytoscape setup and event listeners
 });
-
-// function loadGraphState() {
-//   var saved = localStorage.getItem('cyGraph');
-//   if (saved) {
-//     var elements = JSON.parse(saved);
-//     // Assume 'cy' is the cytoscape instance for the abstract layout
-//     cy.json(elements);  // Restore the state of the abstract graph
-//   }
-// }

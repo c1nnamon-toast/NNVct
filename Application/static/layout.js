@@ -1,81 +1,7 @@
 var cy = cytoscape({
     container: document.getElementById('cy'),
     elements: [],  
-    style: 
-    [
-        {
-            selector: 'node',
-            style: {
-                'content': '',
-                'overlay-opacity': 0,
-                'text-opacity': 1,
-            }
-        },
-        {
-            selector: 'node[id^="redNode"]',
-            style: {
-                'background-color': 'red',
-                'overlay-opacity': 0,
-            }
-        },
-        {
-            selector: 'node[id^="orangeNode"]',
-            style: {
-                'background-color': 'orange',
-                'overlay-opacity': 0,
-            }
-        },
-        {
-            selector: '.show-label',
-            style: {
-                'content': 'data(id)'
-            }  
-        },
-
-        {
-            selector: 'edge',
-            style: {
-                'line-color': 'data(color)', // Use data attributes for color
-                'line-opacity': 'data(opacity)', // Use data attributes for opacity
-                // ... other styles for edges ...
-            }
-        },
-
-        // {
-        //     selector: '.highlighted-edge',
-        //     style: {
-        //         //'line-color': '#000',
-        //         //'line-opacity': 1.0,
-        //         'width': 5 // This sets the content to an empty string
-        //     }
-        // },
-        // {
-        //     selector: '.highlighted-node',
-        //     style: {
-        //         //'line-color': '#000',
-        //         //'line-opacity': 1.0,
-        //         'border-style': 'solid' // This sets the content to an empty string
-        //     }
-        // },
-        {
-            selector: '.faded',
-            style: {
-                'opacity': 0.12 // This sets the content to an empty string
-            }
-        },
-        // {
-        //     selector: '.thin',
-        //     style: {
-        //         'width' : 2 // This sets the content to an empty string
-        //     }
-        // },
-        // {
-        //     selector: '.thick',
-        //     style: {
-        //         'width' : 4 // This sets the content to an empty string
-        //     }
-        // },
-    ],
+    style: cytoscapeStyles,
     layout: {
         name: 'grid'
     },
@@ -84,10 +10,10 @@ var cy = cytoscape({
 
 var isScrolling = false;
 
+
+// Handles the scrolling mechanism
 document.getElementById('cy').addEventListener('wheel', function(event) {
     event.preventDefault(); // Prevent the default scroll behavior
-
-    // Indicate that scrolling is happening
     isScrolling = true;
 
     // Remove any hover effects
@@ -108,12 +34,27 @@ document.getElementById('cy').addEventListener('wheel', function(event) {
     
     // Reset the scrolling flag after a delay
     clearTimeout(window.scrollTimeout);
-    window.scrollTimeout = setTimeout(function() {
+    window.scrollTimeout = setTimeout(function() 
+    {
         isScrolling = false;
     }, 200); // Adjust the time as needed
 });
 
-// Moseover
+// Click action on the node
+cy.on('tap', 'node', function(evt){
+    var node = evt.target;
+    var nodeId = node.id();
+
+    fetch('/process_node/' + nodeId)
+        .then(response => response.json())
+        .then(data => {
+            // Redirect to the visualization page with the calculated value
+            window.location.href = '/visualize_relu/' + nodeId + '?value=' + data.calculatedValue;
+        });
+});
+
+
+// Hover over node
 cy.on('mouseover', 'node', function(event) {
     if (!isScrolling) {
         var node = event.target;
@@ -143,7 +84,7 @@ cy.on('mouseout', 'node', function(event) {
 
 function generateGraph() {
     var startTime = performance.now();
-    
+
     fetch('/layout', {
         method: 'POST',
         body: new URLSearchParams({
@@ -154,56 +95,60 @@ function generateGraph() {
         }
     })
     .then(response => response.json())
-    .then(data => 
-    {  
+    .then(data => {
+        console.log('Received data:', data);
 
         cy.elements().remove();
 
         var containerWidth = document.getElementById('cy').offsetWidth;
         var containerHeight = document.getElementById('cy').offsetHeight;
 
-        var numRedNodes = data.numRedNodes;
-        var numOrangeNodes = data.numOrangeNodes;
-        //var spacingRed = containerHeight / (numRedNodes + 1);
-        //var spacingOrange = containerHeight / (numOrangeNodes + 1);
+        // Determine the number of layers
+        var layers = {};
+        data.nodes.forEach(node => {
+            if (!layers[node.layer]) {
+                layers[node.layer] = [];
+            }
+            layers[node.layer].push(node);
+        });
 
-        for (let i = 0; i < numRedNodes; i++) {
-            cy.add({
-                group: 'nodes',
-                data: { id: 'redNode' + i},
-                position: {
-                    x: 0.25 * containerWidth,  // 25% from the left
-                    y: containerHeight/15 * (i + 1)  // Space them out vertically
-                }
-            });
-        }
+        var layerNames = Object.keys(layers);
+        var layerWidth = containerWidth / layerNames.length;
 
-        for (let j = 0; j < numOrangeNodes; j++) {
-            cy.add({
-                group: 'nodes',
-                data: { id: 'orangeNode' + j},
-                position: {
-                    x: 0.75 * containerWidth,  // 75% from the left
-                    y: containerHeight/15 * (j + 1)  // Space them out vertically
-                }
-            });
-        }
+        // Create nodes for each layer
+        layerNames.forEach((layerName, layerIndex) => {
+            var nodes = layers[layerName];
+            var nodeHeight = containerHeight / nodes.length;
 
-        // When adding edges, you do not need to specify the style directly
-        data.edges.forEach(edgeData => {
-            cy.add({
-                group: 'edges',
-                data: edgeData.data,
-                // Do not apply style here
+            nodes.forEach((node, nodeIndex) => {
+                cy.add({
+                    group: 'nodes',
+                    data: { id: node.id },
+                    position: {
+                        x: parseInt(layerWidth * layerIndex + layerWidth / 2),
+                        y: parseInt(nodeHeight * nodeIndex + nodeHeight / 2)
+                    }
+                });
             });
         });
 
-        // Log frontend rendering time
-        var endTime = performance.now(); // End frontend timing
+        // Add edges
+        data.edges.forEach(edge => {
+            cy.add({
+                group: 'edges',
+                data: {
+                    id: edge.id,
+                    source: edge.source,
+                    target: edge.target,
+                    lineColor: edge.color,
+                    opacity: edge.opacity
+                }
+            });
+        });
+
+        var endTime = performance.now();
         console.log('Frontend rendering duration:', (endTime - startTime) / 1000);
-
     });
-
 }
 
 
@@ -216,7 +161,7 @@ document.getElementById('generateGraph').addEventListener('click', generateGraph
 
 document.getElementById('returnMainNode').addEventListener('click', function () {
   saveGraphState();  // Save state before navigating away
-  window.location.href = "/abstract_layout";
+  window.location.href = "/abstractLayout";
 });
 
 // Load the graph state when the layout is loaded

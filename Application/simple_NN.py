@@ -5,7 +5,7 @@ import torch.nn.functional as F
 class SimpleMLP(nn.Module):
     def __init__(self):
         super(SimpleMLP, self).__init__()
-        self.fc1 = nn.Linear(4, 6)  # Input layer to first hidden layer
+        self.fc1 = nn.Linear(10, 6)  # Input layer to first hidden layer
         self.fc2 = nn.Linear(6, 8)  # First hidden layer to second hidden layer
         self.fc3 = nn.Linear(8, 3)  # Second hidden layer to third hidden layer
         self.fc4 = nn.Linear(3, 1)  # Third hidden layer to fourth hidden layer

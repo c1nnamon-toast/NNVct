@@ -3,61 +3,95 @@ import numpy as np
 import time
 import json
 import os
-
-#from extract_NN1 import ultimate_knowledge as model_data # temporary
+import random
 
 app = Flask(__name__)
 
+@app.route('/visualizeRelu/<node_id>')
+def visualize_relu(node_id):
+    value = request.args.get('value', type=float)  # Get the calculated value from query parameter
+    if value is None:
+        # If no value is provided, handle it appropriately (e.g., set a default or return an error)
+        value = 0  # Example default value
 
-@app.route('/abstract_layout')
+    return render_template('relu_visualization.html', node_id=node_id, calculated_value=value)
+
+
+@app.route('/processNode/<node_id>')
+def process_node(node_id):
+    # Perform your calculations here based on the node_id
+    # For example, calculate a value based on the node's connected edges
+    # ...
+
+    print(node_id)
+
+    with open('C:/Users/darks/Documents/VNV/NNVct/Application/model_info.json', 'r') as json_file:
+        model_data = json.load(json_file)
+
+    weights = model_data['Weights'][0];
+    print(weights);
+
+    calculated_value = 1.6  # Replace with your calculation logic
+
+    return jsonify({'calculatedValue': calculated_value})
+
+@app.route('/abstractLayout')
 def abstract_layout():
-    return render_template('abstract_layout_page.html')
-
+    layers = 5
+    nodes = [{"data": {"id": f"layer{i}", "label": f"Layer {i}"}} for i in range(layers)]
+    edges = [{"data": {"source": f"layer{i}", "target": f"layer{i+1}"}} for i in range(layers - 1)]
+    return render_template('abstract_layout_page.html', elements={"nodes": nodes, "edges": edges})
 
 @app.route('/layout', methods=['GET', 'POST'])
 def layout():
     if request.method == 'POST':
-        start_time = time.time();
+        start_time = time.time()
 
         with open('C:/Users/darks/Documents/VNV/NNVct/Application/model_info.json', 'r') as json_file:
             model_data = json.load(json_file)
-        # the new code should be here
 
-        # Extract weights between first two layers
-        weights_first_to_second = model_data['Weights'][0][0] # Ignore biases for now
-        num_red_nodes = model_data['Layers'][0][2]
-        num_orange_nodes = model_data['Layers'][0][3]
+        nodes = []
+        edges = []
 
-        #print(num_red_nodes, num_orange_nodes, weights_first_to_second)
+        # Iterate through each layer to create nodes
+        for i, layer_info in enumerate(model_data['Layers']):
+            layer_name, layer_type, in_features, out_features = layer_info
+            for node_index in range(out_features):
+                node_id = f'{layer_name}_{node_index}'
+                nodes.append({
+                    'id': node_id,
+                    'layer': layer_name,
+                    'type': layer_type
+                })
 
-        # Assign colors based on whether the original opacity was negative
-        #colors = np.where(random_opacities < 0, 'red', 'green')
+        # Generate dummy edges with random weights and assign color based on weight
+        for i in range(len(model_data['Layers']) - 1):
+            source_layer_info = model_data['Layers'][i]
+            target_layer_info = model_data['Layers'][i + 1]
+            for source_node_index in range(source_layer_info[3]):
+                for target_node_index in range(target_layer_info[3]):
+                    weight = random.uniform(-1, 1)
+                    opacity = (weight + 1) / 2  # Normalize weight to the range [0, 1]
+                    edge_id = f'edge_{source_layer_info[0]}_{source_node_index}-to-{target_layer_info[0]}_{target_node_index}'
+                    source_id = f'{source_layer_info[0]}_{source_node_index}'
+                    target_id = f'{target_layer_info[0]}_{target_node_index}'
+                    edge_color = 'green' if weight > 0 else 'red'
 
-        # Create edges using NumPy arrays for colors and opacities
-
-        edges = [
-            {
-                'data': {
-                    'id': f'edge{i}-{j}',
-                    'source': f'redNode{i}',
-                    'target': f'orangeNode{j}',
-                    'color': 'green' if float(weights_first_to_second[j][i]) > 0  else 'red',
-                    'opacity': float(weights_first_to_second[j][i]),
-                    'width': 2
-                }
-            }
-            for i in range(num_red_nodes) for j in range(num_orange_nodes)
-        ]
+                    edges.append({
+                        'id': edge_id,
+                        'source': source_id,
+                        'target': target_id,
+                        'weight': weight,
+                        'color': edge_color,
+                        'opacity': opacity  # Add opacity to the edge data
+                    })
 
         response_json = jsonify({
-            'numRedNodes': num_red_nodes,
-            'numOrangeNodes': num_orange_nodes,
+            'nodes': nodes,
             'edges': edges
         })
 
-        
         print(f"Backend processing took {time.time() - start_time} seconds.")
-
         return response_json
 
     return render_template('layout_page.html')

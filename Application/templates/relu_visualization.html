@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Include Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="reluGraph"></div>
+    <input type="number" id="nodeValue" placeholder="Enter a value" />
+    <button onclick="plotReLU()">Plot ReLU</button>
+
+    <script>
+        function relu(x) {
+            return x > 0 ? x : 0;
+        }
+
+        function plotReLU() {
+            var nodeValue = parseFloat(document.getElementById('nodeValue').value);
+            var trace = {
+                x: [],
+                y: [],
+                mode: 'lines',
+                type: 'scatter'
+            };
+
+            for (var i = -10; i <= 10; i += 0.5) {
+                trace.x.push(i);
+                trace.y.push(relu(i));
+            }
+
+            var data = [trace];
+
+            var layout = {
+                title: 'ReLU Function Visualization',
+                xaxis: { title: 'x' },
+                yaxis: { title: 'ReLU(x)' }
+            };
+
+            Plotly.newPlot('reluGraph', data, layout);
+        }
+
+        // Plot initial graph
+        plotReLU();
+    </script>
+</body>
+</html>
