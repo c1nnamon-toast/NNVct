@@ -1,14 +1,14 @@
-+- 1.  Transfer to Flask
-#  2.  Add the input layer, which is currently missing 
-+- 3.  Take input from real NN 
-#  4.  Make rectangles in the abstract layer clickable 
-#  5.  Add on click action for each neuron 
-+- 6.  Somehow highlight the hovered node and its adjacent edges (change the size, etc.)
-   7.  Add user input 
-   8.  Add bias support
-!  9.  Center the starting POV
-   10. Move text above purples
-   
+!  1.  Render 3(5) layers when clicking on purples 
+   2.  Find the best way to place purples
+!  3.  Center the starting POV
+!  4.  Highlight only adjacent edges which are before the node
+!  5.  Add input layer in the main layout, currently missing
+   6.  Move text above purples
++- 7.  Somehow highlight the hovered node and its adjacent edges (change the size, etc.)
+   8.  Add bias support   
+   9.  Add user input 
++- 10. Take input from real NN 
++- 11. Transfer to Flask
 
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 
