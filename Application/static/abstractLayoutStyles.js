@@ -3,11 +3,10 @@ var cytoscapeStyles = [
         selector: 'node',
         style: {
             'shape': 'rectangle',
-            'background-color': 'purple',
+            'background-color': '#AF8FE9',
             'label': 'data(label)',
             'text-valign': 'center',
             'text-halign': 'center',
-            // other style properties as needed
         }
     },
     {
@@ -15,8 +14,6 @@ var cytoscapeStyles = [
         style: {
             'width': 2,
             'line-color': '#ccc',
-            // other style properties for edges
         }
     }
-    // add more style rules as needed
 ];

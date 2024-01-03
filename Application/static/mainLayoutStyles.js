@@ -7,21 +7,14 @@ var cytoscapeStyles = [
             'content': '',
             'overlay-opacity': 0,
             'text-opacity': 1,
-        }
+        },
     },
-    // {
-    //     selector: 'node[id^="redNode"]',
-    //     style: {
-    //         'background-color': 'red',
-    //         'overlay-opacity': 0,
-    //     }
-    // },
     {
         selector: 'node',
         style: {
             'background-color': 'orange',
             'overlay-opacity': 0,
-        }
+        },
     },
     {
         selector: '.show-label',

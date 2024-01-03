@@ -25,7 +25,7 @@ def process_node(node_id):
 
     print(node_id)
 
-    with open('C:/Users/darks/Documents/VNV/NNVct/Application/model_info.json', 'r') as json_file:
+    with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
         model_data = json.load(json_file)
 
     weights = model_data['Weights'][0];
@@ -47,7 +47,11 @@ def layout():
     if request.method == 'POST':
         start_time = time.time()
 
-        with open('C:/Users/darks/Documents/VNV/NNVct/Application/model_info.json', 'r') as json_file:
+        dimensions = request.json
+        containerWidth = dimensions['width']
+        containerHeight = dimensions['height']
+
+        with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
             model_data = json.load(json_file)
 
         nodes = []
@@ -56,13 +60,26 @@ def layout():
         # Iterate through each layer to create nodes
         for i, layer_info in enumerate(model_data['Layers']):
             layer_name, layer_type, in_features, out_features = layer_info
-            for node_index in range(out_features):
+
+            layerWidth = containerWidth / (len(model_data) + 1);
+
+            for j, node_index in enumerate(range(out_features)):
                 node_id = f'{layer_name}_{node_index}'
+                nodeHeight = containerHeight / out_features;
+
                 nodes.append({
+                'group': 'nodes',
+                'grabbable': False, 
+                'position': {
+                    'x' : layerWidth * i + layerWidth / 2,
+                    'y': nodeHeight * j + nodeHeight / 2
+                },
+                'data': {
                     'id': node_id,
                     'layer': layer_name,
-                    'type': layer_type
-                })
+                    'type': layer_type,
+                    #'grabbable': False
+                }})
 
         # Generate dummy edges with random weights and assign color based on weight
         for i in range(len(model_data['Layers']) - 1):
@@ -78,12 +95,15 @@ def layout():
                     edge_color = 'green' if weight > 0 else 'red'
 
                     edges.append({
+                    'group': 'edges',
+                    'data': {
                         'id': edge_id,
                         'source': source_id,
                         'target': target_id,
-                        'weight': weight,
-                        'color': edge_color,
+                        #'weight': weight,
+                        'lineColor': edge_color,
                         'opacity': opacity  # Add opacity to the edge data
+                    }
                     })
 
         response_json = jsonify({

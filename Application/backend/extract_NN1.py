@@ -7,7 +7,7 @@ import requests
 
 if __name__ == "__main__":
     model = Network();
-    model.load_state_dict(torch.load('./NNVct/Application/model.pth'))
+    model.load_state_dict(torch.load('./NNVct/Application/backend/model.pth'))
 
     ultimate_knowledge = dict();
     ultimate_knowledge['Layers'] = [];
@@ -29,5 +29,5 @@ if __name__ == "__main__":
 
     #print(ultimate_knowledge);
 
-    with open('./NNVct/Application/model_info.json', 'w') as json_file:
+    with open('./NNVct/Application/backend/model_info.json', 'w') as json_file:
         json.dump(ultimate_knowledge, json_file)

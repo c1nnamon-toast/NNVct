@@ -87,12 +87,13 @@ function generateGraph() {
 
     fetch('/layout', {
         method: 'POST',
-        body: new URLSearchParams({
-            'numOrangeNodes': document.getElementById('numOrangeNodes').value
-        }),
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            width: document.getElementById('cy').offsetWidth, 
+            height: document.getElementById('cy').offsetHeight 
+        })
     })
     .then(response => response.json())
     .then(data => {
@@ -100,51 +101,9 @@ function generateGraph() {
 
         cy.elements().remove();
 
-        var containerWidth = document.getElementById('cy').offsetWidth;
-        var containerHeight = document.getElementById('cy').offsetHeight;
-
-        // Determine the number of layers
-        var layers = {};
-        data.nodes.forEach(node => {
-            if (!layers[node.layer]) {
-                layers[node.layer] = [];
-            }
-            layers[node.layer].push(node);
-        });
-
-        var layerNames = Object.keys(layers);
-        var layerWidth = containerWidth / layerNames.length;
-
-        // Create nodes for each layer
-        layerNames.forEach((layerName, layerIndex) => {
-            var nodes = layers[layerName];
-            var nodeHeight = containerHeight / nodes.length;
-
-            nodes.forEach((node, nodeIndex) => {
-                cy.add({
-                    group: 'nodes',
-                    data: { id: node.id },
-                    position: {
-                        x: parseInt(layerWidth * layerIndex + layerWidth / 2),
-                        y: parseInt(nodeHeight * nodeIndex + nodeHeight / 2)
-                    }
-                });
-            });
-        });
-
-        // Add edges
-        data.edges.forEach(edge => {
-            cy.add({
-                group: 'edges',
-                data: {
-                    id: edge.id,
-                    source: edge.source,
-                    target: edge.target,
-                    lineColor: edge.color,
-                    opacity: edge.opacity
-                }
-            });
-        });
+        data.nodes.forEach(node => cy.add(node));
+        
+        data.edges.forEach(edge => cy.add(edge));
 
         var endTime = performance.now();
         console.log('Frontend rendering duration:', (endTime - startTime) / 1000);
