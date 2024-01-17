@@ -4,25 +4,26 @@ import time
 import json
 import os
 
-from backend.load_NN_partially import loadfullNN
-from backend.load_NN_partially import loadNNpartially
+from backend.render_NN import loadfullNN
+from backend.render_NN import loadNNpartially
 
 
 app = Flask(__name__)
 
 @app.route('/goToMainLayout', methods=['POST'])
 def goToMainLayout():
-    data = request.get_json()
-    selectedLayer = data['selectedLayer'].split('_')[-1];
+    data = request.json
+    layernum = data['selectedLayer'].split('_')[-1];
+    containerWidth = data['width']
+    containerHeight = data['height']
 
-    # Logic to determine which layers to display based on the selected layer
-    # For example, if 'selectedLayer' is 6, you might choose layers 4, 5, 6, 7, and 8
-    # Extract or generate the nodes and edges data for these layers
+    model_info_path = 'C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json'
+    
+    print(int(layernum))
+    response = loadNNpartially(model_info_path, containerWidth, containerHeight, int(layernum) + 1) # 1-based indexing
+    response_json = jsonify(response)
 
-    nodes = {}
-    edges = {}
-
-    return jsonify({'nodes': nodes, 'edges': edges})
+    return response_json
 
 
 
@@ -83,7 +84,7 @@ def abstract_layout():
     with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
         model_data = json.load(json_file)
 
-    #layers = 100
+    #layers = 50
     layers = len(model_data['Layers']) + 1
     nodes = [{"data": {"id": f"layer_{i}", "label": f"Layer {i}"}} for i in range(layers)]
     edges = [{"data": {"source": f"layer_{i}", "target": f"layer_{i+1}"}} for i in range(layers - 1)]

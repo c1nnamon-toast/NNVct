@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ 
-                selectedLayer: clickedLayer
+                selectedLayer : clickedLayer,
+                width: document.getElementById('cy').offsetWidth, 
+                height: document.getElementById('cy').offsetHeight 
             })
         })
         .then(response => response.json())
@@ -35,5 +37,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Additional Cytoscape setup and event listeners
 });
-
 
