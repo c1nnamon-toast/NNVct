@@ -34,7 +34,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
             if((i + left) == 1):
                 node_id = f'input_{j}'
 
-            print(layer_name, node_id)
+            #print(layer_name, node_id)
 
             nodeWidth = int(layerWidth*i + layerWidth / 2);
             nodeHeight = int(phi*(max_possible_nodes - out_features)/2 + phi*j)
@@ -109,7 +109,7 @@ def loadfullNN(model_path, containerWidth, containerHeight):
         layer_name, layer_type, in_features, out_features = layer_info
 
         for j in range(out_features):
-            print(j, i, layer_info)
+            #print(j, i, layer_info)
             node_id = f'{layer_name}_{j}';
             if(i == 0):
                 node_id = f'input_{j}'
