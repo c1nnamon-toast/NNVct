@@ -1,8 +1,8 @@
-!  1.  Render 3(5) layers when clicking on purples 
-   2.  Find the best way to place purples
-!  3.  Center the starting POV
-!  4.  Highlight only adjacent edges which are before the node
-!  5.  Add input layer in the main layout, currently missing
+!  1.  Render 3(5) layers when clicking on purples
+!  2.  Generate the main layout if not present 
+   3.  Find the best way to place purples
+!  4.  Center the starting POV
+!  5.  Highlight only adjacent edges which are before the node
    6.  Move text above purples
 +- 7.  Somehow highlight the hovered node and its adjacent edges (change the size, etc.)
    8.  Add bias support   
