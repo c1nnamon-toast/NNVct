@@ -12,8 +12,28 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     cy.on('tap', 'node', function(evt) {
-        window.location.href = '/layout';
+        var clickedLayer = evt.target.id();
+        
+        fetch('/goToMainLayout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                selectedLayer: clickedLayer
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            cy.elements().remove();
+    
+            data.nodes.forEach(node => cy.add(node));
+            
+            data.edges.forEach(edge => cy.add(edge));
+        });
     });
 
     // Additional Cytoscape setup and event listeners
 });
+
+
