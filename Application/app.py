@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, session
 import numpy as np
 import time
 import json
@@ -9,23 +9,25 @@ from backend.render_NN import loadNNpartially
 
 
 app = Flask(__name__)
+app.secret_key = 'dripus'
 
-@app.route('/goToMainLayout', methods=['POST'])
-def goToMainLayout():
+@app.route('/processNodeForFocusedLayout', methods=['POST'])
+def process_node_for_focused_layout():
     data = request.json
-    layernum = data['selectedLayer'].split('_')[-1];
+    layernum = data['selectedLayer'].split('_')[-1]
     containerWidth = data['width']
     containerHeight = data['height']
 
     model_info_path = 'C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json'
     
-    print(int(layernum))
     response = loadNNpartially(model_info_path, containerWidth, containerHeight, int(layernum) + 1) # 1-based indexing
-    response_json = jsonify(response)
 
-    return response_json
+    # Send the response back to the client
+    return jsonify(response)
 
-
+@app.route('/focusedLayout')
+def focused_layout():
+    return render_template('focused_layout.html')
 
 @app.route('/layout', methods=['GET', 'POST'])
 def layout():

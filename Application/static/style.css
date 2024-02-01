@@ -4,6 +4,15 @@
     z-index: 20;
 }
 
+#manualInput {
+    position: absolute;
+    right: 50%;
+    /* z-index: 20; */
+    padding-top: 0.5%;
+}
+
+
+
 #cy-container {
     width: 100vw;
     height: 100vh;

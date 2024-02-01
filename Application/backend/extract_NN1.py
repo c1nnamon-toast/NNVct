@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     ultimate_knowledge = dict();
     ultimate_knowledge['Layers'] = [];
-    ultimate_knowledge['Activation functions'] = [('fc1', 'ReLU'), ('fc2', 'ReLU'), ('fc3', 'ReLU'), ('fc4', 'ReLU')]; # change in future
+    ultimate_knowledge['Activation functions'] = [('fc1', 'ReLU'), ('fc2', 'ReLU'), ('fc3', 'ReLU'), ('fc4', 'ReLU'), ('fc5', 'ReLU'), ('fc6', 'ReLU')]; # change in future
     ultimate_knowledge['Weights'] = [];     
 
     for name, module in model.named_modules():

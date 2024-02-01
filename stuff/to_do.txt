@@ -9,6 +9,7 @@
    9.  Add bias support   
    10.  Add user input 
 +- 11. Take input from real NN 
+   12. Reset the initial view
 
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 

@@ -1,10 +1,7 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const elements = JSON.parse(document.getElementById('elementsData').textContent);
-
+document.addEventListener('DOMContentLoaded', function() 
+{
     var cy = cytoscape({
         container: document.getElementById('cy'),
-        elements: elements,
-        style: cytoscapeStyles, // your defined styles
         layout: {
             name: 'grid', // or any other layout that fits your design
             // other layout options
@@ -13,11 +10,25 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+    var processedData = JSON.parse(localStorage.getItem('processedData'));
+
+    // Remove any existing elements
+    cy.elements().remove();
+
+    // Add nodes and edges to the Cytoscape graph
+    if (processedData.nodes) {
+        processedData.nodes.forEach(node => cy.add(node));
+    }
+    if (processedData.edges) {
+        processedData.edges.forEach(edge => cy.add(edge));
+    }
+    
+
     // Handles the scrolling mechanism
 
     let scrollMode = true; // Default mode is scroll
     var isScrolling = false;
-    
+
     document.getElementById('toggleScrollZoom').addEventListener('click', function() 
     {
         scrollMode = !scrollMode; // Toggle mode
@@ -60,31 +71,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 200); // Adjust the time as needed
         }
     });
-
-
-    cy.on('tap', 'node', function(evt) {
-        var clickedLayer = evt.target.id();
-    
-        fetch('/processNodeForFocusedLayout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                selectedLayer: clickedLayer,
-                width: document.getElementById('cy').offsetWidth, 
-                height: document.getElementById('cy').offsetHeight
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Store the data in LocalStorage
-            localStorage.setItem('processedData', JSON.stringify(data));
-            // Redirect to the focusedLayout page
-            window.location.href = '/focusedLayout';
-        });
-    });
-
-    // Additional Cytoscape setup and event listeners
 });
-

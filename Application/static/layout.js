@@ -5,42 +5,62 @@ var cy = cytoscape({
     layout: {
         name: 'grid'
     },
-    wheelSensitivity: 0
+    wheelSensitivity: 0.3,
+    zoomingEnabled: false
 });
-
-var isScrolling = false;
 
 
 // Handles the scrolling mechanism
-document.getElementById('cy').addEventListener('wheel', function(event) {
-    event.preventDefault(); // Prevent the default scroll behavior
-    isScrolling = true;
 
-    // Remove any hover effects
-    cy.elements().removeClass('show-label faded highlighted-edge');
+let scrollMode = true; // Default mode is scroll
+var isScrolling = false;
 
-    var pan = cy.pan();
-    var deltaY = event.deltaY;
-    var deltaX = event.deltaX;
-
-    // Adjust the pan based on the scroll delta
-    cy.pan({
-        x: pan.x - deltaX,
-        y: pan.y - deltaY
-    });
-
-    // Force Cytoscape to update its internal spatial indexing
-    //cy.resize();
-    
-    // Reset the scrolling flag after a delay
-    clearTimeout(window.scrollTimeout);
-    window.scrollTimeout = setTimeout(function() 
+document.getElementById('toggleScrollZoom').addEventListener('click', function() 
+{
+    scrollMode = !scrollMode; // Toggle mode
+    if (scrollMode) 
     {
-        isScrolling = false;
-    }, 200); // Adjust the time as needed
+        cy.zoomingEnabled(false);
+    } else 
+    {
+        cy.zoomingEnabled(true);
+    }
 });
 
+document.getElementById('cy').addEventListener('wheel', function(event) {
+    if (scrollMode) 
+    {
+        event.preventDefault(); // Prevent the default scroll behavior
+        isScrolling = true;
+
+        // Remove any hover effects
+        cy.elements().removeClass('show-label faded highlighted-edge');
+
+        var pan = cy.pan();
+        var deltaY = event.deltaY;
+        var deltaX = event.deltaX;
+
+        // Adjust the pan based on the scroll delta
+        cy.pan({
+            x: pan.x - deltaX,
+            y: pan.y - deltaY
+        });
+
+        // Force Cytoscape to update its internal spatial indexing
+        //cy.resize();
+        
+        // Reset the scrolling flag after a delay
+        clearTimeout(window.scrollTimeout);
+        window.scrollTimeout = setTimeout(function() 
+        {
+            isScrolling = false;
+        }, 200); // Adjust the time as needed
+    }
+});
+
+
 // Click action on the node
+
 cy.on('tap', 'node', function(evt){
     var node = evt.target;
     var nodeId = node.id();
