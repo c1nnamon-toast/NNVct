@@ -11,6 +11,8 @@
 +- 11. Take input from real NN 
    12. Reset the initial view
 !  13. Add actual weights
-
+!  14. Backend normalisation 
+!  15. Fix the main layout reset view 
+!  16. Fully connected layer doubled edges
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 

@@ -5,26 +5,21 @@ import torch.nn.functional as F
 class SimpleMLP(nn.Module):
     def __init__(self):
         super(SimpleMLP, self).__init__()
-        self.fc1 = nn.Linear(12, 25) 
-        self.fc2 = nn.Linear(15, 20) 
-        self.fc3 = nn.Linear(20, 30)  
-        self.fc4 = nn.Linear(30, 15) 
-        self.fc5 = nn.Linear(15, 7) 
-        self.fc6 = nn.Linear(7, 3) 
-        self.fc7 = nn.Linear(3, 1) 
+        self.fc1 = nn.Linear(2, 4) 
+        self.fc2 = nn.Linear(4, 6) 
+        self.fc3 = nn.Linear(6, 14)  
+        self.fc4 = nn.Linear(14, 8) 
+        self.fc5 = nn.Linear(8, 4) 
 
     def forward(self, x):
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
         x = F.relu(self.fc3(x))
-        x = F.relu(self.fc4(x))
-        x = F.relu(self.fc5(x))
-        x = self.fc6(x)  
+        x = self.fc4(x)  
         return x
 
-# Create an instance of the MLP
-model = SimpleMLP()
 
-# Print the model architecture
-#print(model)
-torch.save(model.state_dict(), './NNVct/Application/backend/model.pth')
+if __name__ == "__main__":
+    model = SimpleMLP()
+
+    torch.save(model.state_dict(), './NNVct/Application/backend/model.pth')

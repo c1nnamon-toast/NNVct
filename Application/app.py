@@ -15,18 +15,17 @@ def abstract_layout():
     with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
         model_data = json.load(json_file)
 
-    #layers = 50
+    #layers = 150
     layers = len(model_data['Layers']) + 1
     layersInfo = getLayers('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json')
     neuronnumbers = [x[3] for x in layersInfo]
     max_neurons = max(neuronnumbers);
-    #print(neuronnumbers)
     
     nodes = [{"data":   {
                         "id": f"layer_{i}", 
                         "label": f"Layer {i}", 
-                        "width": int(max(0.2, neuronnumbers[i]/max_neurons)*150/2),
-                        "height": int(max(0.2, neuronnumbers[i]/max_neurons)*150),
+                        "width": int(max(0.2, neuronnumbers[i]/max_neurons)*100/2),
+                        "height": int(max(0.2, neuronnumbers[i]/max_neurons)*100),
                         }} for i in range(layers)]
     edges = [{"data":   {
                         "source": f"layer_{i}", 
