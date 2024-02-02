@@ -5,14 +5,16 @@ var cytoscapeStyles = [
             'shape': 'rectangle',
             'background-color': '#AF8FE9',
             'label': 'data(label)',
-            'text-valign': 'center',
+            'text-valign': 'top',
             'text-halign': 'center',
+            'width': 'data(width)',
+            'height': 'data(height)',
         }
     },
     {
         selector: 'edge',
         style: {
-            'width': 2,
+            'width': 5,
             'line-color': '#ccc',
         }
     }

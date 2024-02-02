@@ -3,6 +3,20 @@ import os
 import random
 from math import ceil 
 
+
+def getLayers(model_path):
+    with open(model_path, 'r') as json_file:
+        model_data = json.load(json_file)
+    
+    nodes = []
+    edges = []
+
+    smort = [['input', '', 0, model_data['Layers'][0][2]]] # Include input layer
+    smort.extend(model_data['Layers'])
+
+    return smort
+
+
 def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, layers=5):
     with open(model_path, 'r') as json_file:
         model_data = json.load(json_file)
@@ -58,7 +72,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
     # Edges
     for i in range(right - left): 
                    # not right - left + 1 because there are 1 less "edges" than layers
-        print(i)
+        #print(i)
         source_layer_info = smort[i]
         target_layer_info = smort[i + 1]
         for source_node_index in range(source_layer_info[3]):

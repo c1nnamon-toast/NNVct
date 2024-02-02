@@ -4,12 +4,38 @@ import time
 import json
 import os
 
-from backend.render_NN import loadfullNN
-from backend.render_NN import loadNNpartially
+from backend.render_NN import loadfullNN, loadNNpartially, getLayers
 
 
 app = Flask(__name__)
 app.secret_key = 'dripus'
+
+@app.route('/abstractLayout')
+def abstract_layout():
+    with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
+        model_data = json.load(json_file)
+
+    #layers = 50
+    layers = len(model_data['Layers']) + 1
+    layersInfo = getLayers('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json')
+    neuronnumbers = [x[3] for x in layersInfo]
+    max_neurons = max(neuronnumbers);
+    #print(neuronnumbers)
+    
+    nodes = [{"data":   {
+                        "id": f"layer_{i}", 
+                        "label": f"Layer {i}", 
+                        "width": int(max(0.2, neuronnumbers[i]/max_neurons)*150/2),
+                        "height": int(max(0.2, neuronnumbers[i]/max_neurons)*150),
+                        }} for i in range(layers)]
+    edges = [{"data":   {
+                        "source": f"layer_{i}", 
+                        "target": f"layer_{i+1}"
+                        }} for i in range(layers - 1)]
+    
+    print(nodes);
+
+    return render_template('abstract_layout_page.html', elements={"nodes": nodes, "edges": edges})
 
 @app.route('/processNodeForFocusedLayout', methods=['POST'])
 def process_node_for_focused_layout():
@@ -22,12 +48,14 @@ def process_node_for_focused_layout():
     
     response = loadNNpartially(model_info_path, containerWidth, containerHeight, int(layernum) + 1) # 1-based indexing
 
+    print(response)
     # Send the response back to the client
     return jsonify(response)
 
 @app.route('/focusedLayout')
 def focused_layout():
     return render_template('focused_layout.html')
+
 
 @app.route('/layout', methods=['GET', 'POST'])
 def layout():
@@ -43,6 +71,7 @@ def layout():
         response = loadfullNN(model_info_path, containerWidth, containerHeight)
         response_json = jsonify(response)
 
+        print(response)
         print(f"Backend processing took {time.time() - start_time} seconds.")
         return response_json
 
@@ -58,8 +87,6 @@ def visualize_relu(node_id):
         value = 0  # Example default value
 
     return render_template('relu_visualization.html', node_id=node_id, calculated_value=value)
-
-
 
 @app.route('/processNode/<node_id>')
 def process_node(node_id):
@@ -78,20 +105,6 @@ def process_node(node_id):
     calculated_value = 1.6  # Replace with your calculation logic
 
     return jsonify({'calculatedValue': calculated_value})
-
-
-
-@app.route('/abstractLayout')
-def abstract_layout():
-    with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
-        model_data = json.load(json_file)
-
-    #layers = 50
-    layers = len(model_data['Layers']) + 1
-    nodes = [{"data": {"id": f"layer_{i}", "label": f"Layer {i}"}} for i in range(layers)]
-    edges = [{"data": {"source": f"layer_{i}", "target": f"layer_{i+1}"}} for i in range(layers - 1)]
-    return render_template('abstract_layout_page.html', elements={"nodes": nodes, "edges": edges})
-
 
 
 

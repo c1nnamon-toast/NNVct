@@ -10,6 +10,36 @@ var cy = cytoscape({
 });
 
 
+function generateGraph() {
+    var startTime = performance.now();
+
+    fetch('/layout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            width: document.getElementById('cy').offsetWidth, 
+            height: document.getElementById('cy').offsetHeight 
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Received data:', data);
+
+        cy.elements().remove();
+
+        data.nodes.forEach(node => cy.add(node));
+        
+        data.edges.forEach(edge => cy.add(edge));
+
+        var endTime = performance.now();
+        console.log('Frontend rendering duration:', (endTime - startTime) / 1000);
+    });
+}
+
+
+
 // Handles the scrolling mechanism
 
 let scrollMode = true; // Default mode is scroll
@@ -92,7 +122,6 @@ cy.on('mouseover', 'node', function(event) {
     }
 });
 
-// Mouseout
 cy.on('mouseout', 'node', function(event) {
     cy.elements().removeClass('show-label faded highlighted-edge');
     //cy.elements().addClass('thin');
@@ -102,33 +131,6 @@ cy.on('mouseout', 'node', function(event) {
 });
 
 
-function generateGraph() {
-    var startTime = performance.now();
-
-    fetch('/layout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ 
-            width: document.getElementById('cy').offsetWidth, 
-            height: document.getElementById('cy').offsetHeight 
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Received data:', data);
-
-        cy.elements().remove();
-
-        data.nodes.forEach(node => cy.add(node));
-        
-        data.edges.forEach(edge => cy.add(edge));
-
-        var endTime = performance.now();
-        console.log('Frontend rendering duration:', (endTime - startTime) / 1000);
-    });
-}
 
 
 function saveGraphState() {

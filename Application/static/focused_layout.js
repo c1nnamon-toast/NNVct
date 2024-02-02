@@ -2,13 +2,14 @@ document.addEventListener('DOMContentLoaded', function()
 {
     var cy = cytoscape({
         container: document.getElementById('cy'),
+        style: cytoscapeStyles,
         layout: {
             name: 'grid', // or any other layout that fits your design
             // other layout options
         },
+        wheelSensitivity: 0.3,
         zoomingEnabled: false
     });
-
 
     var processedData = JSON.parse(localStorage.getItem('processedData'));
 
@@ -71,4 +72,35 @@ document.addEventListener('DOMContentLoaded', function()
             }, 200); // Adjust the time as needed
         }
     });
+
+    // // Hover over node
+    cy.on('mouseover', 'node', function(event) {
+        if (!isScrolling) {
+            var node = event.target;
+            
+            node.addClass('show-label');
+            //node.connectedEdges().addClass('thick');
+            //node.addClass('highlighted-node');
+            // Select all elements and subtract the current node and its connected edges
+            var others = cy.elements().subtract(node).subtract(node.connectedEdges());
+            others.addClass('faded');
+
+            console.log(node.classes());
+            // // Highlight the connected edges of the hovered node
+            // node.connectedEdges().addClass('highlighted-edge');
+        }
+    });
+
+    cy.on('mouseout', 'node', function(event) {
+        cy.elements().removeClass('show-label faded highlighted-edge');
+        //cy.elements().addClass('thin');
+        // event.target.removeClass('show-label');
+
+        // console.log(node.classes());
+    });
+
+    document.getElementById('returnMainNode').addEventListener('click', function () {
+        window.location.href = "/abstractLayout";
+      });
+      
 });

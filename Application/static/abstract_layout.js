@@ -85,6 +85,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Additional Cytoscape setup and event listeners
+    document.getElementById('fullNN').addEventListener('click', function () {
+        //saveGraphState();  // Save state before navigating away
+        window.location.href = "/layout";
+      });
 });
 

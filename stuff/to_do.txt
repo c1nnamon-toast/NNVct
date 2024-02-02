@@ -7,9 +7,10 @@
    7.  Move text above purples
 +- 8.  Somehow highlight the hovered node and its adjacent edges (change the size, etc.)
    9.  Add bias support   
-   10.  Add user input 
+   10. Add user input 
 +- 11. Take input from real NN 
    12. Reset the initial view
+!  13. Add actual weights
 
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 

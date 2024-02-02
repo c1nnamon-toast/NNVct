@@ -1,6 +1,6 @@
 #returnMainNode {
     position: absolute;
-    right: 10px;
+    right: 5%;
     z-index: 20;
 }
 
@@ -11,7 +11,12 @@
     padding-top: 0.5%;
 }
 
-
+#fullNN
+{
+    position: absolute;
+    right: 5%;
+    z-index: 20;
+}
 
 #cy-container {
     width: 100vw;
