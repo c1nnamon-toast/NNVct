@@ -10,6 +10,10 @@ var cy = cytoscape({
 });
 
 
+// Whole Neural Network
+
+document.getElementById('generateGraph').addEventListener('click', generateGraph);
+
 function generateGraph() {
     var startTime = performance.now();
 
@@ -38,6 +42,24 @@ function generateGraph() {
     });
 }
 
+    // Caching
+    function saveGraphState() {
+        var elements = cy.json();  // Get the current state of the graph
+        localStorage.setItem('cyGraph', JSON.stringify(elements));  // Save it to localStorage
+    }
+
+    // Load the graph state when the layout is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        loadGraphState();
+    });
+    
+    function loadGraphState() {
+        var saved = localStorage.getItem('cyGraph');
+        if (saved) {
+        var elements = JSON.parse(saved);
+        cy.json(elements);  // Restore the state of the graph
+        }
+    }
 
 
 // Handles the scrolling mechanism
@@ -89,6 +111,7 @@ document.getElementById('cy').addEventListener('wheel', function(event) {
 });
 
 
+
 // Click action on the node
 
 cy.on('tap', 'node', function(evt){
@@ -105,6 +128,7 @@ cy.on('tap', 'node', function(evt){
 
 
 // Hover over node
+
 cy.on('mouseover', 'node', function(event) {
     if (!isScrolling) {
         var node = event.target;
@@ -131,29 +155,10 @@ cy.on('mouseout', 'node', function(event) {
 });
 
 
-
-
-function saveGraphState() {
-  var elements = cy.json();  // Get the current state of the graph
-  localStorage.setItem('cyGraph', JSON.stringify(elements));  // Save it to localStorage
-}
-
-document.getElementById('generateGraph').addEventListener('click', generateGraph);
+// Return to main node
 
 document.getElementById('returnMainNode').addEventListener('click', function () {
   saveGraphState();  // Save state before navigating away
   window.location.href = "/abstractLayout";
 });
 
-// Load the graph state when the layout is loaded
-document.addEventListener("DOMContentLoaded", function() {
-  loadGraphState();
-});
-
-function loadGraphState() {
-  var saved = localStorage.getItem('cyGraph');
-  if (saved) {
-    var elements = JSON.parse(saved);
-    cy.json(elements);  // Restore the state of the graph
-  }
-}

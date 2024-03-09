@@ -1,8 +1,8 @@
-from flask import Flask, render_template, jsonify, request, session
-import numpy as np
 import time
 import json
 import os
+from flask import Flask, render_template, jsonify, request, session
+import numpy as np
 
 from backend.render_NN import loadfullNN, loadNNpartially, getLayers
 
@@ -34,7 +34,7 @@ def abstract_layout():
     
     print(nodes);
 
-    return render_template('abstract_layout_page.html', elements={"nodes": nodes, "edges": edges})
+    return render_template('abstract_layout.html', elements={"nodes": nodes, "edges": edges})
 
 @app.route('/processNodeForFocusedLayout', methods=['POST'])
 def process_node_for_focused_layout():
@@ -74,7 +74,7 @@ def layout():
         print(f"Backend processing took {time.time() - start_time} seconds.")
         return response_json
 
-    return render_template('layout_page.html')
+    return render_template('layout.html')
 
 
 
