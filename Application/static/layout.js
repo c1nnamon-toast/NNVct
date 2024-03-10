@@ -138,16 +138,16 @@ cy.on('mouseover', 'node', function(event) {
     if (!isScrolling) {
         var node = event.target;
         
-        node.addClass('show-label');
-        //node.connectedEdges().addClass('thick');
-        //node.addClass('highlighted-node');
-        // Select all elements and subtract the current node and its connected edges
-        var others = cy.elements().subtract(node).subtract(node.connectedEdges());
-        others.addClass('faded');
+        var incomingEdges = node.connectedEdges(function(el) {
+            return el.target().id() === node.id(); 
+        });
+        
+        var others = cy.elements().subtract(node).subtract(incomingEdges);
 
-        console.log(node.classes());
-        // // Highlight the connected edges of the hovered node
-        // node.connectedEdges().addClass('highlighted-edge');
+        node.addClass('show-label');
+        incomingEdges.addClass('highlighted-edge'); 
+        
+        others.addClass('faded');
     }
 });
 

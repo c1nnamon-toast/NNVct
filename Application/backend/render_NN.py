@@ -161,7 +161,8 @@ def loadfullNN(model_path, containerWidth, containerHeight):
 
                 weight = random.uniform(-1, 1)
                 opacity = (weight + 1) / 2  # Normalize weight to the range [0, 1]
-                edge_color = 'green' if weight > 0 else 'red'
+                edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if weight > 0 else '#9e00b8 #df0072 #ff0000' # green & red
+                #edge_color = 'green' if weight > 0 else 'red'
 
                 edges.append({
                 'group': 'edges',
@@ -169,8 +170,8 @@ def loadfullNN(model_path, containerWidth, containerHeight):
                     'id': edge_id,
                     'source': source_id,
                     'target': target_id,
-                    #'weight': weight,
-                    'lineColor': edge_color,
+                    'lineGradient': edge_gradient,
+                    #'lineColor': edge_color,
                     'opacity': opacity  # Add opacity to the edge data
                 }
                 })

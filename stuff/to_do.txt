@@ -1,4 +1,3 @@
-!  1.  Generate the main layout if not present 
 !  2.  Highlight only adjacent edges which are before the node
 !  3.  Show full and partial layouts on separate pages
 +- 4.  Render 3(5) layers when clicking on purples
@@ -15,5 +14,6 @@
 !  15. Fix the main layout reset view 
 !  16. Fully connected layer doubled edges
    17. Reset view abstract layout
+   1.  Generate the main layout if not present 
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 
