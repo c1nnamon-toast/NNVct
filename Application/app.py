@@ -36,6 +36,8 @@ def abstract_layout():
 
     return render_template('abstract_layout.html', elements={"nodes": nodes, "edges": edges})
 
+
+
 @app.route('/processNodeForFocusedLayout', methods=['POST'])
 def process_node_for_focused_layout():
     data = request.json
@@ -51,9 +53,12 @@ def process_node_for_focused_layout():
     # Send the response back to the client
     return jsonify(response)
 
+
+
 @app.route('/focusedLayout')
 def focused_layout():
     return render_template('focused_layout.html')
+
 
 
 @app.route('/layout', methods=['GET', 'POST'])
@@ -86,6 +91,8 @@ def visualize_relu(node_id):
         value = 0  # Example default value
 
     return render_template('relu_visualization.html', node_id=node_id, calculated_value=value)
+
+
 
 @app.route('/processNode/<node_id>')
 def process_node(node_id):

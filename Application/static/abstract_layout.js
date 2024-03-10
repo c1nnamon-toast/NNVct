@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+
     // Handles the scrolling mechanism
 
     let scrollMode = true; // Default mode is scroll
@@ -61,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    
+    // Node click
 
     cy.on('tap', 'node', function(evt) {
         var clickedLayer = evt.target.id();
@@ -85,9 +88,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
+
+    // Load full NN button
+    
     document.getElementById('fullNN').addEventListener('click', function () {
         //saveGraphState();  // Save state before navigating away
         window.location.href = "/layout";
-      });
-});
+    });
+    
 
+
+// // Reset the view
+// document.getElementById('resetView').addEventListener('click', function () {
+//     cy.fit();
+// });
+});

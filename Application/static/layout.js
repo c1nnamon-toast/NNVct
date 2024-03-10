@@ -1,3 +1,5 @@
+// Heart
+
 var cy = cytoscape({
     container: document.getElementById('cy'),
     elements: [],  
@@ -8,6 +10,7 @@ var cy = cytoscape({
     wheelSensitivity: 0.3,
     zoomingEnabled: false
 });
+
 
 
 // Whole Neural Network
@@ -60,6 +63,7 @@ function generateGraph() {
         cy.json(elements);  // Restore the state of the graph
         }
     }
+
 
 
 // Handles the scrolling mechanism
@@ -127,6 +131,7 @@ cy.on('tap', 'node', function(evt){
 });
 
 
+
 // Hover over node
 
 cy.on('mouseover', 'node', function(event) {
@@ -155,6 +160,7 @@ cy.on('mouseout', 'node', function(event) {
 });
 
 
+
 // Return to main node
 
 document.getElementById('returnMainNode').addEventListener('click', function () {
@@ -162,3 +168,9 @@ document.getElementById('returnMainNode').addEventListener('click', function () 
   window.location.href = "/abstractLayout";
 });
 
+
+
+// // Reset the view
+// document.getElementById('resetView').addEventListener('click', function () {
+//     cy.fit();
+// });

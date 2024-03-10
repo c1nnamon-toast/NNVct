@@ -1,31 +1,33 @@
-#returnMainNode {
-    position: absolute;
-    right: 5%;
-    z-index: 20;
-}
-
-#manualInput {
-    position: absolute;
-    right: 50%;
-    /* z-index: 20; */
-    padding-top: 0.5%;
-}
-
-#fullNN
-{
-    position: absolute;
-    right: 5%;
-    z-index: 20;
-}
-
-#cy-container {
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
-}
-
 #cy {
-    width: 100vw;
-    height: 100vh;
-    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 30px;
+    left: 0px;
 }
+
+
+/*buttons*/
+
+#buttons{
+    text-align: center;
+}
+
+#toggleScrollZoom{
+    position: absolute;
+    display: inline-block;
+    left: 0.5%;
+}
+
+#returnMainNode, #fullNN {
+    position: absolute;
+    right: 0.5%;
+    z-index: 20;
+}
+
+
+/* #cy-container {
+    width: 95vw;
+    height: 95vh;
+    overflow: auto;
+} */

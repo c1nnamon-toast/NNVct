@@ -14,5 +14,6 @@
 !  14. Backend normalisation 
 !  15. Fix the main layout reset view 
 !  16. Fully connected layer doubled edges
+   17. Reset view abstract layout
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 

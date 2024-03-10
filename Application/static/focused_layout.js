@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() 
-{
+{   
+    // Cy
+
     var cy = cytoscape({
         container: document.getElementById('cy'),
         style: cytoscapeStyles,
@@ -24,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function()
         processedData.edges.forEach(edge => cy.add(edge));
     }
     
+
 
     // Handles the scrolling mechanism
 
@@ -62,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function()
             });
 
             // Force Cytoscape to update its internal spatial indexing
-            //cy.resize();
+            cy.resize();
             
             // Reset the scrolling flag after a delay
             clearTimeout(window.scrollTimeout);
@@ -73,7 +76,11 @@ document.addEventListener('DOMContentLoaded', function()
         }
     });
 
-    // // Hover over node
+
+
+
+    // Hover over node
+    
     cy.on('mouseover', 'node', function(event) {
         if (!isScrolling) {
             var node = event.target;
@@ -99,8 +106,21 @@ document.addEventListener('DOMContentLoaded', function()
         // console.log(node.classes());
     });
 
+
+
+    // Return to main node
+
     document.getElementById('returnMainNode').addEventListener('click', function () {
         window.location.href = "/abstractLayout";
       });
       
+
+
+    // // Reset the view
+
+    // document.getElementById('resetView').addEventListener('click', function () {
+    //     cy.ready(function() {
+    //         cy.fit();
+    //     });
+    // });
 });
