@@ -1,5 +1,5 @@
 1. If I can move the project to TS is it nessecarry?
 
-2. Best OOp solution for render_NN
+2. Best OOp solution for render_NN (class methods?)
 
 3. Weights handling 
