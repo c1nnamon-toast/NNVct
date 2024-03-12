@@ -34,21 +34,19 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
     # print(smort, left, right)
 
     layerWidth = containerWidth / total_layers
-    max_nodes_on_screen = 13
+    
     max_possible_nodes = max([x[3] for x in smort])
     phi = containerHeight/max_nodes_on_screen
+
 
     #Nodes
     for i, layer_info in enumerate(smort):
         layer_name, layer_type, in_features, out_features = layer_info
 
         for j in range(out_features):
-            #print(j, i, layer_info)
-            node_id = f'{layer_name}_{j}';
+            node_id = f'{layer_name}_{j}'
             if((i + left) == 1):
                 node_id = f'input_{j}'
-
-            #print(layer_name, node_id)
 
             nodeWidth = int(layerWidth*i + layerWidth / 2);
             nodeHeight = int(phi*(max_possible_nodes - out_features)/2 + phi*j)
@@ -69,10 +67,10 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
                 }
             })
 
+
     # Edges
     for i in range(right - left): 
-                   # not right - left + 1 because there are 1 less "edges" than layers
-        #print(i)
+    # not right - left + 1 because there are 1 less "edge layers" than actuall layers
         source_layer_info = smort[i]
         target_layer_info = smort[i + 1]
         for source_node_index in range(source_layer_info[3]):
@@ -100,6 +98,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
                 }
                 })
 
+
     return {'nodes': nodes, 'edges': edges}
 
 
@@ -120,6 +119,7 @@ def loadfullNN(model_path, containerWidth, containerHeight):
     max_nodes_on_screen = 13
     max_possible_nodes = max([x[3] for x in smort])
     phi = containerHeight/max_nodes_on_screen
+
 
     #Nodes
     for i, layer_info in enumerate(smort):
@@ -150,6 +150,7 @@ def loadfullNN(model_path, containerWidth, containerHeight):
                 }
             })
     
+
     #Edges
     for i in range(0, total_layers - 1):
                
@@ -180,5 +181,6 @@ def loadfullNN(model_path, containerWidth, containerHeight):
                     'opacity': opacity  # Add opacity to the edge data
                 }
                 })
+
 
     return {'nodes': nodes, 'edges': edges}

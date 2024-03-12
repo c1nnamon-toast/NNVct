@@ -1,11 +1,12 @@
 Non-visual changes:
 !  1.  Add actual weights
-!  2.  Fully connected layer doubled edges
-!* 3.  decide whether TF or PT or both
-!* 4.  Backend normalisation
-   5.  TypeScript possibility
-   5.  Add bias support   
-   6.  Add user input   
+!  2.  Add OOP to render_NN
+!  3.  Fully connected layer doubled edges
+!* 4.  decide whether TF or PT or both
+!* 5.  Backend normalisation
+   6.  TypeScript possibility
+   7.  Add bias support   
+   8.  Add user input   
 
 Visual changes:
 !  1.  Implement Reset view functionality
