@@ -34,7 +34,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
     # print(smort, left, right)
 
     layerWidth = containerWidth / total_layers
-    
+    max_nodes_on_screen = 13
     max_possible_nodes = max([x[3] for x in smort])
     phi = containerHeight/max_nodes_on_screen
 
@@ -98,7 +98,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
                 }
                 })
 
-
+    
     return {'nodes': nodes, 'edges': edges}
 
 

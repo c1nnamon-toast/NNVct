@@ -4,9 +4,8 @@ Non-visual changes:
 !  3.  Fully connected layer doubled edges
 !* 4.  decide whether TF or PT or both
 !* 5.  Backend normalisation
-   6.  TypeScript possibility
-   7.  Add bias support   
-   8.  Add user input   
+   6.  Add bias support   
+   7.  Add user input   
 
 Visual changes:
 !  1.  Implement Reset view functionality
