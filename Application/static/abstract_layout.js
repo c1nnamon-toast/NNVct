@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
         style: cytoscapeStyles, // your defined styles
         layout: {
             name: 'grid', // or any other layout that fits your design
-            // other layout options
         },
         zoomingEnabled: false
     });

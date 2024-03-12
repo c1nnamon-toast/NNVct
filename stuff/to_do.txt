@@ -1,19 +1,19 @@
-!  2.  Highlight only adjacent edges which are before the node
-!  3.  Show full and partial layouts on separate pages
-+- 4.  Render 3(5) layers when clicking on purples
-   5.  Find the best way to place purples
-+- 6.  Center the starting POV
-   7.  Move text above purples
-+- 8.  Somehow highlight the hovered node and its adjacent edges (change the size, etc.)
-   9.  Add bias support   
-   10. Add user input 
-+- 11. Take input from real NN 
-   12. Reset the initial view
-!  13. Add actual weights
-!  14. Backend normalisation 
-!  15. Fix the main layout reset view 
-!  16. Fully connected layer doubled edges
-   17. Reset view abstract layout
-   1.  Generate the main layout if not present 
+Non-visual changes:
+!  1.  Add actual weights
+!  2.  Fully connected layer doubled edges
+!* 3.  decide whether TF or PT or both
+!* 4.  Backend normalisation
+   5.  TypeScript possibility
+   5.  Add bias support   
+   6.  Add user input   
+
+Visual changes:
+!  1.  Implement Reset view functionality
+!  2.  Interchangeable color option (default and gradient) 
+!  3.  Fully connected layer doubled edges
+   4.  Find a better way to highlight the hovered node and its adjacent edges
++- 5.  Find the best way to place purples (currently automated) 
+?  6.  Render 3(5) layers when clicking on purples
+
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 

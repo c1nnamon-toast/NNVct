@@ -31,7 +31,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
     smort = smort[left-1:right]
     total_layers = len(smort) 
 
-    print(smort, left, right)
+    # print(smort, left, right)
 
     layerWidth = containerWidth / total_layers
     max_nodes_on_screen = 13
@@ -84,6 +84,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
                 weight = random.uniform(-1, 1)
                 opacity = (weight + 1) / 2  # Normalize weight to the range [0, 1]
                 edge_color = 'green' if weight > 0 else 'red'
+                edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if (edge_color == 'green') else '#9e00b8 #df0072 #ff0000' # green & red
 
                 edges.append({
                 'group': 'edges',
@@ -92,7 +93,9 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
                     'source': source_id,
                     'target': target_id,
                     #'weight': weight,
+
                     'lineColor': edge_color,
+                    'lineGradient': edge_gradient,
                     'opacity': opacity  # Add opacity to the edge data
                 }
                 })
@@ -161,17 +164,19 @@ def loadfullNN(model_path, containerWidth, containerHeight):
 
                 weight = random.uniform(-1, 1)
                 opacity = (weight + 1) / 2  # Normalize weight to the range [0, 1]
-                edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if weight > 0 else '#9e00b8 #df0072 #ff0000' # green & red
-                #edge_color = 'green' if weight > 0 else 'red'
-
+                edge_color = 'green' if weight > 0 else 'red'
+                edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if (edge_color == 'green') else '#9e00b8 #df0072 #ff0000' # green & red
+                
                 edges.append({
                 'group': 'edges',
                 'data': {
                     'id': edge_id,
                     'source': source_id,
                     'target': target_id,
+                    #'weight': weight,
+
                     'lineGradient': edge_gradient,
-                    #'lineColor': edge_color,
+                    'lineColor': edge_color,
                     'opacity': opacity  # Add opacity to the edge data
                 }
                 })
