@@ -11,6 +11,10 @@ var cy = cytoscape({
     zoomingEnabled: false
 });
 
+import { initializeCustomEvents } from './customEvents.js';
+initializeCustomEvents(cy);
+
+
 
 
 // Whole Neural Network
@@ -34,11 +38,13 @@ function generateGraph() {
     .then(data => {
         console.log('Received data:', data);
 
+
         cy.elements().remove();
 
         data.nodes.forEach(node => cy.add(node));
         
         data.edges.forEach(edge => cy.add(edge));
+
 
         var endTime = performance.now();
         console.log('Frontend rendering duration:', (endTime - startTime) / 1000);
@@ -56,6 +62,7 @@ function generateGraph() {
         loadGraphState();
     });
     
+    // Load cached network
     function loadGraphState() {
         var saved = localStorage.getItem('cyGraph');
         if (saved) {
@@ -116,20 +123,30 @@ document.getElementById('cy').addEventListener('wheel', function(event) {
 
 
 
-// Click action on the node
+// Double tap action: Fetch and redirect or perform other actions
+// Listen for the custom 'doubleTap' event to handle double clicks
+// Listen for custom 'singleTap' event for focusing on the node
+cy.on('singleTap', 'node', function(evt) {
+    var node = evt.target;
+    // Focus on the node (center and default zoom)
+    cy.animate({
+        center: { eles: node },
+        zoom: 1
+    }, {
+        duration: 250
+    });
+});
 
-cy.on('tap', 'node', function(evt){
+// Listen for custom 'doubleTap' event to fetch data and potentially redirect
+cy.on('doubleTap', 'node', function(evt) {
     var node = evt.target;
     var nodeId = node.id();
-
     fetch('/processNode/' + nodeId)
         .then(response => response.json())
         .then(data => {
-            // Redirect to the visualization page with the calculated value
             window.location.href = '/visualizeRelu/' + nodeId + '?value=' + data.calculatedValue;
         });
 });
-
 
 
 // Hover over node
@@ -145,14 +162,14 @@ cy.on('mouseover', 'node', function(event) {
         var others = cy.elements().subtract(node).subtract(incomingEdges);
 
         node.addClass('show-label');
-        incomingEdges.addClass('highlighted-edge'); 
+        incomingEdges.addClass('highlighted-edge edge-gradient'); 
         
         others.addClass('faded');
     }
 });
 
 cy.on('mouseout', 'node', function(event) {
-    cy.elements().removeClass('show-label faded highlighted-edge');
+    cy.elements().removeClass('show-label faded highlighted-edge edge-gradient');
     //cy.elements().addClass('thin');
     // event.target.removeClass('show-label');
 
@@ -170,7 +187,8 @@ document.getElementById('returnMainNode').addEventListener('click', function () 
 
 
 
-// // Reset the view
-// document.getElementById('resetView').addEventListener('click', function () {
-//     cy.fit();
-// });
+// Reset the view
+document.getElementById('resetView').addEventListener('click', function () {
+    cy.zoom(1); 
+    cy.pan({ x: 0, y: 0 }); // Resets pan to the origin (0,0)
+});

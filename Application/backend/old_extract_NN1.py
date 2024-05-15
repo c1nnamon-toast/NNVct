@@ -1,6 +1,6 @@
 import torch
 #import numpy as np
-from simple_NN import SimpleMLP as Network # ????
+from Application.backend.simple_NN_PT import SimpleMLP as Network # ????
 #import inspect
 import json
 import requests

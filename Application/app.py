@@ -12,12 +12,12 @@ app.secret_key = 'dripus'
 
 @app.route('/abstractLayout')
 def abstract_layout():
-    with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
+    with open('C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
         model_data = json.load(json_file)
 
     #layers = 150
     layers = len(model_data['Layers']) + 1
-    layersInfo = getLayers('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json')
+    layersInfo = getLayers('C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json')
     neuronnumbers = [x[3] for x in layersInfo]
     max_neurons = max(neuronnumbers);
     
@@ -45,11 +45,11 @@ def process_node_for_focused_layout():
     containerWidth = data['width']
     containerHeight = data['height']
 
-    model_info_path = 'C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json'
+    model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json'
     
     response = loadNNpartially(model_info_path, containerWidth, containerHeight, int(layernum) + 1) # 1-based indexing
 
-    print(response)
+    #print(response)
     # Send the response back to the client
     return jsonify(response)
 
@@ -70,12 +70,12 @@ def layout():
         containerWidth = dimensions['width']
         containerHeight = dimensions['height']
 
-        model_info_path = 'C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json'
+        model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json'
         
         response = loadfullNN(model_info_path, containerWidth, containerHeight)
         response_json = jsonify(response)
 
-        print(response)
+        #print(response)
         print(f"Backend processing took {time.time() - start_time} seconds.")
         return response_json
 
@@ -102,11 +102,11 @@ def process_node(node_id):
 
     print(node_id)
 
-    with open('C:/Users/darks/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
+    with open('C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json', 'r') as json_file:
         model_data = json.load(json_file)
 
     weights = model_data['Weights'][0];
-    print(weights);
+    #print(weights);
 
     calculated_value = 1.6  # Replace with your calculation logic
 

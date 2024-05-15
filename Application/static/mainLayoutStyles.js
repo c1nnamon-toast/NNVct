@@ -16,12 +16,19 @@ var cytoscapeStyles = [
     {
         selector: 'edge',
         style: {
+            'line-fill' : 'solid',
+            'line-color': 'data(lineColor)', 
+            'line-opacity': 'data(opacity)', 
+        }
+    },
+    {
+        selector: '.edge-gradient',
+        style: {
             'line-fill' : 'linear-gradient',
             'line-gradient-stop-colors': 'data(lineGradient)', // Use data attributes for color
             'line-opacity': 'data(opacity)', // Use data attributes for opacity
         }
     },
-
     {
         selector: '.show-label',
         style: {
