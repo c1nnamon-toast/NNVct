@@ -1,14 +1,15 @@
 Non-visual changes:
-!  1.  Add actual weights
-!  2.  Add OOP to render_NN
++  1.  Add actual weights
 !  3.  Fully connected layer doubled edges
-!* 4.  decide whether TF or PT or both
++  4.  Decide whether TF/PT/both
 !* 5.  Backend normalisation
+   2.  Add OOP to render_NN
    6.  Add bias support   
    7.  Add user input   
 
 Visual changes:
-!  1.  Implement Reset view functionality
+!  0.  Something is off with NN centering
++  1.  Implement Reset view functionality
 !  2.  Interchangeable color option (default and gradient) 
 !  3.  Fully connected layer doubled edges
    4.  Find a better way to highlight the hovered node and its adjacent edges

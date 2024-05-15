@@ -34,7 +34,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
     # print(smort, left, right)
 
     layerWidth = containerWidth / total_layers
-    max_nodes_on_screen = 13
+    max_nodes_on_screen = 13 # something is off with calculations
     max_possible_nodes = max([x[3] for x in smort])
     phi = containerHeight/max_nodes_on_screen
 
@@ -80,7 +80,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
                 target_id = f'{target_layer_info[0]}_{target_node_index}'
 
                 weight = random.uniform(-1, 1)
-                opacity = (weight + 1) / 2  # Normalize weight to the range [0, 1]
+                opacity = abs(weight*0.8)  # Normalize weight to the range [0, 1]
                 edge_color = 'green' if weight > 0 else 'red'
                 edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if (edge_color == 'green') else '#9e00b8 #df0072 #ff0000' # green & red
 
@@ -116,7 +116,7 @@ def loadfullNN(model_path, containerWidth, containerHeight):
     total_layers = len(smort) 
 
     layerWidth = containerWidth / total_layers
-    max_nodes_on_screen = 13
+    max_nodes_on_screen = 13 # something is off with calculations
     max_possible_nodes = max([x[3] for x in smort])
     phi = containerHeight/max_nodes_on_screen
 
@@ -162,14 +162,10 @@ def loadfullNN(model_path, containerWidth, containerHeight):
                 edge_id = f'edge_{source_layer_info[0]}_{source_node_index}-to-{target_layer_info[0]}_{target_node_index}'
                 source_id = f'{source_layer_info[0]}_{source_node_index}'
                 target_id = f'{target_layer_info[0]}_{target_node_index}'
+                weight = model_data['Weights'][i][target_node_index][source_node_index]
+                # weight = random.uniform(-1, 1)
 
-                # print(len(model_data['Weights']))   
-                # print(len(model_data['Weights'][i]))
-                # print(len(model_data['Weights'][i][source_node_index]), '\n')
-                # weight = model_data['Weights'][i][source_node_index][target_node_index]
-                weight = random.uniform(-1, 1)
-
-                opacity = (weight + 1) / 2  # Normalize weight to the range [0, 1]
+                opacity = abs(weight*0.8)  # abs for negative weights
                 edge_color = 'green' if weight > 0 else 'red'
                 edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if (edge_color == 'green') else '#9e00b8 #df0072 #ff0000' # green & red
                 

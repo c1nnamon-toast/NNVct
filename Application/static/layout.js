@@ -123,7 +123,9 @@ document.getElementById('cy').addEventListener('wheel', function(event) {
 
 
 
-// Double tap action: Fetch and redirect or perform other actions
+// Double tap action
+
+// Fetch and redirect or perform other actions
 // Listen for the custom 'doubleTap' event to handle double clicks
 // Listen for custom 'singleTap' event for focusing on the node
 cy.on('singleTap', 'node', function(evt) {
@@ -144,7 +146,13 @@ cy.on('doubleTap', 'node', function(evt) {
     fetch('/processNode/' + nodeId)
         .then(response => response.json())
         .then(data => {
-            window.location.href = '/visualizeRelu/' + nodeId + '?value=' + data.calculatedValue;
+            var calculatedValue = data.calculatedValue;
+            var activationFunction = data.activationFunction;
+    
+            // Use calculatedValue and activationFunction to visualize the function
+            // ...
+    
+            window.location.href = '/visualizeActivation/' + nodeId + '?value=' + calculatedValue;
         });
 });
 

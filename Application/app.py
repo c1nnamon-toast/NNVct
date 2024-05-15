@@ -83,34 +83,58 @@ def layout():
 
 
 
-@app.route('/visualizeRelu/<node_id>')
+@app.route('/visualizeActivation/<node_id>')
 def visualize_relu(node_id):
     value = request.args.get('value', type=float)  # Get the calculated value from query parameter
     if value is None:
         # If no value is provided, handle it appropriately (e.g., set a default or return an error)
         value = 0  # Example default value
 
-    return render_template('relu_visualization.html', node_id=node_id, calculated_value=value)
+    activation_function = 'ReLU'
+
+    return render_template('activation_visualization.html', node_id=node_id, calculated_value=value)
 
 
 
 @app.route('/processNode/<node_id>')
 def process_node(node_id):
-    # Perform your calculations here based on the node_id
-    # For example, calculate a value based on the node's connected edges
-    # ...
-
     print(node_id)
+
+    # Split the node_id into layer and neuron index
+    layer, neuron_index = node_id.rsplit('_', 1)
+    neuron_index = int(neuron_index)
 
     with open('C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json', 'r') as json_file:
         model_data = json.load(json_file)
 
-    weights = model_data['Weights'][0];
-    #print(weights);
+    # Find the index of the given layer
+    layer_index = None
+    for i, layer_data in enumerate(model_data['Layers']):
+        if layer_data[0] == layer:
+            layer_index = i
+            break
+    if layer_index is None:
+        return jsonify({'error': 'Layer not found'})
 
-    calculated_value = 1.6  # Replace with your calculation logic
+    # Get the weights for the given layer
+    weights = model_data['Weights'][layer_index]
 
-    return jsonify({'calculatedValue': calculated_value})
+    # Check if neuron index is valid
+    if neuron_index >= len(weights):
+        return jsonify({'error': 'Neuron index out of range'})
+
+    # Extract the weights corresponding to the neuron index
+    neuron_weights = weights[neuron_index]
+
+    print(f"Weights that come into the neuron {node_id}: {neuron_weights}")
+
+    # Assume some input values for now
+    input_values = [1.0 for _ in neuron_weights]
+
+    # Calculate the weighted sum
+    weighted_sum = sum(weight * input_value for weight, input_value in zip(neuron_weights, input_values))
+
+    return jsonify({'weightedSum': weighted_sum})
 
 
 

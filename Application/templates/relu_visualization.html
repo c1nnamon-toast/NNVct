@@ -6,7 +6,6 @@
 </head>
 <body>
     <div id="reluGraph"></div>
-    <input type="number" id="nodeValue" placeholder="Enter a value" />
     <button onclick="plotReLU()">Plot ReLU</button>
 
     <script>
@@ -15,11 +14,20 @@
         }
 
         function plotReLU() {
-            var nodeValue = parseFloat(document.getElementById('nodeValue').value);
+            // Generate a random value between -10 and 10
+            var nodeValue = Math.random() * 20 - 10;
             var trace = {
                 x: [],
                 y: [],
                 mode: 'lines',
+                type: 'scatter'
+            };
+
+            var highlightTrace = {
+                x: [nodeValue],
+                y: [relu(nodeValue)],
+                mode: 'markers',
+                marker: { size: 10, color: 'red' },
                 type: 'scatter'
             };
 
@@ -28,7 +36,7 @@
                 trace.y.push(relu(i));
             }
 
-            var data = [trace];
+            var data = [trace, highlightTrace];
 
             var layout = {
                 title: 'ReLU Function Visualization',
