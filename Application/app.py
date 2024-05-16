@@ -4,7 +4,7 @@ import os
 from flask import Flask, render_template, jsonify, request, session
 import numpy as np
 
-from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node_functionality
+from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node
 
 
 app = Flask(__name__)
@@ -85,12 +85,16 @@ def layout():
 
 @app.route('/api/activation/<node_id>')
 def api_activation(node_id):
-    model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json'
-    weights, activation_function = process_node_functionality(model_info_path, node_id)
-    return jsonify(weights=weights, activation_function=activation_function)
+    if "input" in node_id.lower():
+        return jsonify(proceed=False, message="Stay on current page")
+    else:
+        model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json'
+        weights, activation_function = process_node(model_info_path, node_id)
+        return jsonify(proceed=True, weights=weights, activation_function=activation_function, node_id=node_id)
 
 @app.route('/visualizeActivation/<node_id>')
 def visualize_activation(node_id):
+
     return render_template('activation_visualization.html', node_id=node_id)
 
 

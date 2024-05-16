@@ -143,7 +143,18 @@ cy.on('singleTap', 'node', function(evt) {
 cy.on('doubleTap', 'node', function(evt) {
     var node = evt.target;
     var nodeId = node.id();
-    window.location.href = '/visualizeActivation/' + nodeId;
+    fetch('/api/activation/' + nodeId)
+        .then(response => response.json())
+        .then(data => {
+            if (data.proceed) {
+                // Redirect to the visualization page if API allows proceeding
+                window.location.href = '/visualizeActivation/' + nodeId;
+            } else {
+                // Handle the situation where no redirection is needed
+                console.log(data.message); // Optionally display this message in the UI
+            }
+        })
+        .catch(error => console.error('Error:', error));
 });
 
 

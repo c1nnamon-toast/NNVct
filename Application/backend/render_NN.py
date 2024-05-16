@@ -18,7 +18,7 @@ def getLayers(model_path):
 
 
 
-def process_node_functionality(path, node_id):
+def process_node(path, node_id):
     # Split the node_id into layer and neuron index
     layer, neuron_index = node_id.rsplit('_', 1)
     neuron_index = int(neuron_index)
@@ -43,10 +43,10 @@ def process_node_functionality(path, node_id):
     if activation_index is None:
         return {'error': 'Activation not found'}
 
-    weights = model_data['Weights'][layer_index]
+    neuron_weights = model_data['Weights'][layer_index][neuron_index]
     activation_function = model_data['Activation functions'][activation_index][1]
 
-    return weights, activation_function
+    return neuron_weights, activation_function
 
 
 
