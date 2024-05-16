@@ -143,17 +143,7 @@ cy.on('singleTap', 'node', function(evt) {
 cy.on('doubleTap', 'node', function(evt) {
     var node = evt.target;
     var nodeId = node.id();
-    fetch('/processNode/' + nodeId)
-        .then(response => response.json())
-        .then(data => {
-            var calculatedValue = data.calculatedValue;
-            var activationFunction = data.activationFunction;
-    
-            // Use calculatedValue and activationFunction to visualize the function
-            // ...
-    
-            window.location.href = '/visualizeActivation/' + nodeId + '?value=' + calculatedValue;
-        });
+    window.location.href = '/visualizeActivation/' + nodeId;
 });
 
 

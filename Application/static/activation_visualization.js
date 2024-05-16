@@ -1,34 +1,35 @@
-function relu(x) {
-    return x > 0 ? x : 0;
+document.addEventListener('DOMContentLoaded', function() {
+    const nodeId = new URL(window.location.href).pathname.split('/').pop();
+    fetchDataAndPlot(nodeId);
+});
+
+function fetchDataAndPlot(nodeId) {
+    fetch(`/api/activation/${nodeId}`)
+        .then(response => response.json())
+        .then(data => {
+            plotActivation(data.weights, data.activation_function);
+        })
+        .catch(error => console.error('Error fetching activation data:', error));
 }
 
-function sigmoid(x) {
-    return 1 / (1 + Math.exp(-x));
-}
-
-function tanh(x) {
-    return Math.tanh(x);
-}
-
-function plotActivation() {
-    // Generate a random value between -10 and 10
+function plotActivation(weights, activationFunction) {
     var nodeValue = Math.random() * 20 - 10;
+    var activationFunctions = {
+        relu: x => x > 0 ? x : 0,
+        sigmoid: x => 1 / (1 + Math.exp(-x)),
+        tanh: x => Math.tanh(x)
+    };
 
-    // Randomly select an activation function
-    var activationFunctions = [relu, sigmoid, tanh];
-    var activationFunction = activationFunctions[Math.floor(Math.random() * activationFunctions.length)];
-    var activationFunctionName = activationFunction.name;
-
+    var selectedActivationFunction = activationFunctions[activationFunction];
     var trace = {
         x: [],
         y: [],
         mode: 'lines',
         type: 'scatter'
     };
-
     var highlightTrace = {
         x: [nodeValue],
-        y: [activationFunction(nodeValue)],
+        y: [selectedActivationFunction(nodeValue)],
         mode: 'markers',
         marker: { size: 10, color: 'red' },
         type: 'scatter'
@@ -36,22 +37,16 @@ function plotActivation() {
 
     for (var i = -10; i <= 10; i += 0.5) {
         trace.x.push(i);
-        trace.y.push(activationFunction(i));
+        trace.y.push(selectedActivationFunction(i));
     }
 
     var data = [trace, highlightTrace];
 
     var layout = {
-        title: activationFunctionName,
+        title: `Activation Function: ${activationFunction}`,
         xaxis: { title: 'x' },
         yaxis: { title: 'y' }
     };
 
     Plotly.newPlot('ActivationFunctionGraph', data, layout);
 }
-
-// Add plotActivation to the global scope
-window.plotActivation = plotActivation;
-
-// Plot initial graph
-plotActivation();

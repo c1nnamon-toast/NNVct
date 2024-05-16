@@ -17,6 +17,39 @@ def getLayers(model_path):
     return smort
 
 
+
+def process_node_functionality(path, node_id):
+    # Split the node_id into layer and neuron index
+    layer, neuron_index = node_id.rsplit('_', 1)
+    neuron_index = int(neuron_index)
+
+    with open(path, 'r') as json_file:
+        model_data = json.load(json_file)
+
+    # Find the index of the given layer
+    layer_index = None
+    for i, layer_data in enumerate(model_data['Layers']):
+        if layer_data[0] == layer:
+            layer_index = i
+            break
+
+    # Find the index of the given activation
+    activation_index = None
+    for i, activation_data in enumerate(model_data['Activation functions']):
+        if activation_data[0] == layer:
+            activation_index = i
+            break
+
+    if activation_index is None:
+        return {'error': 'Activation not found'}
+
+    weights = model_data['Weights'][layer_index]
+    activation_function = model_data['Activation functions'][activation_index][1]
+
+    return weights, activation_function
+
+
+
 def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, layers=5):
     with open(model_path, 'r') as json_file:
         model_data = json.load(json_file)

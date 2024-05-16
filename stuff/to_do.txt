@@ -1,20 +1,20 @@
 Non-visual changes:
 +  1.  Add actual weights
-!  3.  Fully connected layer doubled edges
-+  4.  Decide whether TF/PT/both
-!* 5.  Backend normalisation
-   2.  Add OOP to render_NN
+!  2.  Fully connected layer doubled edges
++  3.  Decide whether TF/PT/both
+!* 4.  Backend normalisation
+   5.  Add OOP to render_NN
    6.  Add bias support   
    7.  Add user input   
 
 Visual changes:
-!  0.  Something is off with NN centering
-+  1.  Implement Reset view functionality
-!  2.  Interchangeable color option (default and gradient) 
-!  3.  Fully connected layer doubled edges
-   4.  Find a better way to highlight the hovered node and its adjacent edges
-+- 5.  Find the best way to place purples (currently automated) 
-?  6.  Render 3(5) layers when clicking on purples
+!! 1.  Something is off with NN centering
++  2.  Implement Reset view functionality
+!  3.  Interchangeable color option (default and gradient) 
+!  4.  Fully connected layer doubled edges
+   5.  Find a better way to highlight the hovered node and its adjacent edges
++- 6.  Find the best way to place purples (currently automated) 
+?  7.  Render 3(5) layers when clicking on purples
 
 --------------------------------------
 ?? Illustrate the "Flow" of the Network forward (and backward if present) 

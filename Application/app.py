@@ -4,7 +4,7 @@ import os
 from flask import Flask, render_template, jsonify, request, session
 import numpy as np
 
-from backend.render_NN import loadfullNN, loadNNpartially, getLayers
+from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node_functionality
 
 
 app = Flask(__name__)
@@ -83,58 +83,15 @@ def layout():
 
 
 
+@app.route('/api/activation/<node_id>')
+def api_activation(node_id):
+    model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json'
+    weights, activation_function = process_node_functionality(model_info_path, node_id)
+    return jsonify(weights=weights, activation_function=activation_function)
+
 @app.route('/visualizeActivation/<node_id>')
-def visualize_relu(node_id):
-    value = request.args.get('value', type=float)  # Get the calculated value from query parameter
-    if value is None:
-        # If no value is provided, handle it appropriately (e.g., set a default or return an error)
-        value = 0  # Example default value
-
-    activation_function = 'ReLU'
-
-    return render_template('activation_visualization.html', node_id=node_id, calculated_value=value)
-
-
-
-@app.route('/processNode/<node_id>')
-def process_node(node_id):
-    print(node_id)
-
-    # Split the node_id into layer and neuron index
-    layer, neuron_index = node_id.rsplit('_', 1)
-    neuron_index = int(neuron_index)
-
-    with open('C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json', 'r') as json_file:
-        model_data = json.load(json_file)
-
-    # Find the index of the given layer
-    layer_index = None
-    for i, layer_data in enumerate(model_data['Layers']):
-        if layer_data[0] == layer:
-            layer_index = i
-            break
-    if layer_index is None:
-        return jsonify({'error': 'Layer not found'})
-
-    # Get the weights for the given layer
-    weights = model_data['Weights'][layer_index]
-
-    # Check if neuron index is valid
-    if neuron_index >= len(weights):
-        return jsonify({'error': 'Neuron index out of range'})
-
-    # Extract the weights corresponding to the neuron index
-    neuron_weights = weights[neuron_index]
-
-    print(f"Weights that come into the neuron {node_id}: {neuron_weights}")
-
-    # Assume some input values for now
-    input_values = [1.0 for _ in neuron_weights]
-
-    # Calculate the weighted sum
-    weighted_sum = sum(weight * input_value for weight, input_value in zip(neuron_weights, input_values))
-
-    return jsonify({'weightedSum': weighted_sum})
+def visualize_activation(node_id):
+    return render_template('activation_visualization.html', node_id=node_id)
 
 
 
