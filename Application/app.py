@@ -6,18 +6,20 @@ import numpy as np
 
 from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node
 
+PATH = "C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json"
+#PATH = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json'
 
 app = Flask(__name__)
 app.secret_key = 'dripus'
 
 @app.route('/abstractLayout')
 def abstract_layout():
-    with open('C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json', 'r') as json_file:
+    with open(PATH, 'r') as json_file:
         model_data = json.load(json_file)
 
     #layers = 150
     layers = len(model_data['Layers']) + 1
-    layersInfo = getLayers('C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json')
+    layersInfo = getLayers(PATH)
     neuronnumbers = [x[3] for x in layersInfo]
     max_neurons = max(neuronnumbers);
     
@@ -45,7 +47,7 @@ def process_node_for_focused_layout():
     containerWidth = data['width']
     containerHeight = data['height']
 
-    model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json'
+    model_info_path = PATH
     
     response = loadNNpartially(model_info_path, containerWidth, containerHeight, int(layernum) + 1) # 1-based indexing
 
@@ -70,7 +72,7 @@ def layout():
         containerWidth = dimensions['width']
         containerHeight = dimensions['height']
 
-        model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json'
+        model_info_path = PATH
         
         response = loadfullNN(model_info_path, containerWidth, containerHeight)
         response_json = jsonify(response)
@@ -88,7 +90,7 @@ def api_activation(node_id):
     if "input" in node_id.lower():
         return jsonify(proceed=False, message="Stay on current page")
     else:
-        model_info_path = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json'
+        model_info_path = PATH
         weights, activation_function = process_node(model_info_path, node_id)
         return jsonify(proceed=True, weights=weights, activation_function=activation_function, node_id=node_id)
 

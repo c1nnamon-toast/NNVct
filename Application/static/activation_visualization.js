@@ -50,7 +50,8 @@ function plotActivation(weights, activationFunction, nodeValue) {
     var layout = {
         title: `Activation Function: ${activationFunction}`,
         xaxis: { title: 'x' },
-        yaxis: { title: 'y' }
+        yaxis: { title: 'y' },
+        showlegend: false // This line hides the legend
     };
 
     Plotly.newPlot('ActivationFunctionGraph', data, layout);

@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', function()
         wheelSensitivity: 0.3,
         zoomingEnabled: false
     });
+    
+    // import { initializeCustomEvents } from './customEvents.js';
+    // initializeCustomEvents(cy);
+
 
     var processedData = JSON.parse(localStorage.getItem('processedData'));
 
@@ -26,6 +30,40 @@ document.addEventListener('DOMContentLoaded', function()
         processedData.edges.forEach(edge => cy.add(edge));
     }
     
+
+    // // Double tap action
+
+    // // Fetch and redirect or perform other actions
+    // // Listen for the custom 'doubleTap' event to handle double clicks
+    // // Listen for custom 'singleTap' event for focusing on the node
+    // cy.on('singleTap', 'node', function(evt) {
+    //     var node = evt.target;
+    //     // Focus on the node (center and default zoom)
+    //     cy.animate({
+    //         center: { eles: node },
+    //         zoom: 1
+    //     }, {
+    //         duration: 250
+    //     });
+    // });
+
+    // // Listen for custom 'doubleTap' event to fetch data and potentially redirect
+    // cy.on('doubleTap', 'node', function(evt) {
+    //     var node = evt.target;
+    //     var nodeId = node.id();
+    //     fetch('/api/activation/' + nodeId)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (data.proceed) {
+    //                 // Redirect to the visualization page if API allows proceeding
+    //                 window.location.href = '/visualizeActivation/' + nodeId;
+    //             } else {
+    //                 // Handle the situation where no redirection is needed
+    //                 console.log(data.message); // Optionally display this message in the UI
+    //             }
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    // });
 
 
     // Handles the scrolling mechanism
@@ -80,26 +118,26 @@ document.addEventListener('DOMContentLoaded', function()
 
 
     // Hover over node
-    
+
     cy.on('mouseover', 'node', function(event) {
         if (!isScrolling) {
             var node = event.target;
             
-            node.addClass('show-label');
-            //node.connectedEdges().addClass('thick');
-            //node.addClass('highlighted-node');
-            // Select all elements and subtract the current node and its connected edges
-            var others = cy.elements().subtract(node).subtract(node.connectedEdges());
-            others.addClass('faded');
+            var incomingEdges = node.connectedEdges(function(el) {
+                return el.target().id() === node.id(); 
+            });
+            
+            var others = cy.elements().subtract(node).subtract(incomingEdges);
 
-            console.log(node.classes());
-            // // Highlight the connected edges of the hovered node
-            // node.connectedEdges().addClass('highlighted-edge');
+            node.addClass('show-label');
+            incomingEdges.addClass('highlighted-edge edge-gradient'); 
+            
+            others.addClass('faded');
         }
     });
 
     cy.on('mouseout', 'node', function(event) {
-        cy.elements().removeClass('show-label faded highlighted-edge');
+        cy.elements().removeClass('show-label faded highlighted-edge edge-gradient');
         //cy.elements().addClass('thin');
         // event.target.removeClass('show-label');
 
@@ -116,11 +154,9 @@ document.addEventListener('DOMContentLoaded', function()
       
 
 
-    // // Reset the view
-
-    // document.getElementById('resetView').addEventListener('click', function () {
-    //     cy.ready(function() {
-    //         cy.fit();
-    //     });
-    // });
+    // Reset the view
+    document.getElementById('resetView').addEventListener('click', function () {
+        cy.zoom(1); 
+        cy.pan({ x: 0, y: 0 }); // Resets pan to the origin (0,0)
+    });
 });

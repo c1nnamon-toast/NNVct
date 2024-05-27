@@ -112,8 +112,10 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
                 source_id = f'{source_layer_info[0]}_{source_node_index}'
                 target_id = f'{target_layer_info[0]}_{target_node_index}'
 
-                weight = random.uniform(-1, 1)
-                opacity = abs(weight*0.8)  # Normalize weight to the range [0, 1]
+                #weight = random.uniform(-1, 1)
+                print(left, right, left+i, target_node_index, source_node_index)
+                weight = model_data['Weights'][left + i - 1][target_node_index][source_node_index]
+                opacity = abs(weight*0.8)  # Normalize weights
                 edge_color = 'green' if weight > 0 else 'red'
                 edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if (edge_color == 'green') else '#9e00b8 #df0072 #ff0000' # green & red
 
