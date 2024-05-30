@@ -1,93 +1,78 @@
-import onnx
 import re
+import onnx
+from onnx import numpy_helper
+from NNVct.Application.backend.UOP_loadinfo import extract_model_info
 
-def extract_model_info(model_path):
+
+def extract_layers_info(layers):
     """
-    Extracts names of layers and their corresponding activation functions based on the provided ONNX model. *Doesn't extract weights*
-
-    Reads an ONNX model from the given file path and extracts a list of layer names paired with their associated activation functions, if any. 
-    The activation functions are identified based on a predefined list of activation function names stored in a text file. 
+    Extracts simplified layer names and their corresponding activation function names from a list of layers.
 
     Parameters:
-    - model_path (str): The file path to the ONNX model.
-
+    - layers (List[Tuple[str, str]]): A list of tuples, where each tuple contains a layer identifier and its activation function.
+    
     Returns:
-    - List[Tuple[str, str]]: A list of tuples, where each tuple contains:
-        - The name of the layer.
-        - The name of the activation function associated with the layer; an empty string if none.
+    - List[Tuple[str, str]]: A list of tuples, where each tuple contains the simplified layer name and the normalized activation function name.
     """
+    layer_and_activation_info = []
+    for layer in layers:
+        layer_name, activation = layer
+
+        # Extract a simplified layer name
+        match = re.search(r'([^/]+)/[^/]+$', layer_name)
+        simple_layer_name = match.group(1) if match else layer_name
+
+        # Normalize the activation function name
+        if activation:
+            activation_parts = activation.split('/')
+            activation_name = activation_parts[-1] if activation_parts else activation
+            activation_name = re.sub(r'_\d+$', '', activation_name).lower()
+        else:
+            activation_name = ''
+
+        layer_and_activation_info.append((simple_layer_name, activation_name))
+
+
+    return layer_and_activation_info
+
+
+def extract_weights(model_path):
     """
-    Notes:
-    - The function assumes that activation functions are specified as the last part of the node name in the model's graph.
-    - The function handles potential naming conventions where activation functions might have a suffix indicating
-      their index (e.g., "_1"). Pytorch (PT) models are known to have such naming conventions.
-    - The activation function names are expected to be in lowercase in the 'activation_functions.txt' file.
-    - Weight extraction is avoided due to the complexity of the output structure and the potential size of the weights.
+    Loads an ONNX model and extracts all the weight tensors as numpy arrays.\n
+    Parameters:
+    - model_path (str): The file path to the ONNX model.\n
+    Returns:
+    - List[np.ndarray]: A list of numpy arrays, each representing the weights for a layer in the model.
     """
     model = onnx.load(model_path)
+    weights = []
+    for initializer in model.graph.initializer:
+        weight = numpy_helper.to_array(initializer)
+        weights.append(weight)
+        # print(weight.shape)
 
-    # List with tuples of size 2, where the first element is the layer name and the second element is the activation function
-    layers = []
 
-    # File of considered activation functions, (to lower case)  
-    with open('./NNVct/Application/backend/activation_functions.txt', 'r') as f:
-        activations = [line.strip().lower() for line in f]
+    return weights
 
-    previous_layer = None
-    previous_activation = ""
-    for i, node in enumerate(model.graph.node):
-        # The activiations are at the end of the node name
-        # Split the node name by '/' and get the last part (to lower case)
-        node_name_parts = node.name.lower().split('/')
-        node_name_last_part = node_name_parts[-1] if node_name_parts else node.name.lower()
-
-        # PT adds an underscore and a number at the end of the activation function name
-        # Regex to ignore both the underscore and the number
-        node_name_last_part = re.sub(r'_\d+$', '', node_name_last_part)
-
-        # Check what we are currently looking at activation or a true layer
-        # If the TL doesn't have an activation function, i.e. TL comes after a TL
-        # then the previous TL doesn't have an activation function
-        if node_name_last_part in activations:
-            previous_activation = node.name
-        else:
-            if previous_layer:
-                layers.append((previous_layer, previous_activation))
-            previous_layer = node.name
-            previous_activation = ""
-
-    # Last layer check
-    if previous_layer:
-        layers.append((previous_layer, previous_activation))
-
-    return layers
 
 
 
 
 # Testing
 
-# TF usage example
-def TF():
-    layers = extract_model_info("./NNVct/Application/backend/model_TF.onnx")
-
-    # Fancy printing
-    print(f"Model Information for ./NNVct/Application/backend/model_TF.onnx:\n")
-    print("Layers:")
-    for i, layer in enumerate(layers):
-        print(f"Layer {i + 1}:   {layer[0]},   {layer[1] if layer[1] else 'None'}")
-
-# PT usage example
-def PT():
-    layers = extract_model_info("./NNVct/Application/backend/model_PT.onnx")
-
-    # Fancy printing
-    print(f"Model Information for ./NNVct/Application/backend/model_PT.onnx:\n")
-    print("Layers:")
-    for i, layer in enumerate(layers):
-        print(f"Layer {i + 1}:   {layer[0]},   {layer[1] if layer[1] else 'None'}")
-
 if __name__ == "__main__":
-    TF()
-    PT()
+    path = "./NNVct/Application/backend/model_TF.onnx"
+    layers = extract_model_info(path)
+    layer_and_activation_info = extract_layers_info(layers)
+    weights = extract_weights(path)
 
+
+    print([info[0] for info in layer_and_activation_info], [info[1] for info in layer_and_activation_info], [w.shape for w in weights], sep='\n', end='\n\n')
+
+
+    # path = "./NNVct/Application/backend/model_PT.onnx"
+    # layers = extract_model_info(path)
+    # layer_and_activation_info = extract_layers_info(layers)
+    # weights = extract_weights(path)
+    
+    # print([info[0] for info in layer_and_activation_info], [info[1] for info in layer_and_activation_info], [w.shape for w in weights], sep='\n', end='\n\n')
