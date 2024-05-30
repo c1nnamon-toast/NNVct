@@ -1,16 +1,35 @@
 import onnx
-from onnx import numpy_helper
 import re
 
 def extract_model_info(model_path):
+    """
+    Extracts names of layers and their corresponding activation functions based on the provided ONNX model. *Doesn't extract weights*
+
+    Reads an ONNX model from the given file path and extracts a list of layer names paired with their associated activation functions, if any. 
+    The activation functions are identified based on a predefined list of activation function names stored in a text file. 
+
+    Parameters:
+    - model_path (str): The file path to the ONNX model.
+
+    Returns:
+    - List[Tuple[str, str]]: A list of tuples, where each tuple contains:
+        - The name of the layer.
+        - The name of the activation function associated with the layer; an empty string if none.
+    """
+    """
+    Notes:
+    - The function assumes that activation functions are specified as the last part of the node name in the model's graph.
+    - The function handles potential naming conventions where activation functions might have a suffix indicating
+      their index (e.g., "_1"). Pytorch (PT) models are known to have such naming conventions.
+    - The activation function names are expected to be in lowercase in the 'activation_functions.txt' file.
+    - Weight extraction is avoided due to the complexity of the output structure and the potential size of the weights.
+    """
     model = onnx.load(model_path)
 
-    # List with tuples of size 2 
-    # where the first element is the layer name and the second element is the activation function
+    # List with tuples of size 2, where the first element is the layer name and the second element is the activation function
     layers = []
-    weights = {}
 
-    # File of considered activation functions, (to lower case)
+    # File of considered activation functions, (to lower case)  
     with open('./NNVct/Application/backend/activation_functions.txt', 'r') as f:
         activations = [line.strip().lower() for line in f]
 
@@ -42,6 +61,11 @@ def extract_model_info(model_path):
         layers.append((previous_layer, previous_activation))
 
     return layers
+
+
+
+
+# Testing
 
 # TF usage example
 def TF():

@@ -9,6 +9,7 @@ def format_layer_info(layer_name, activation_name, weight):
 
     return layer_info, activation_info, weight_info
 
+
 def save_model_info_to_json(model_path, json_filename):
     # Extract the model information
     layers = extract_model_info(model_path)
@@ -36,6 +37,12 @@ def save_model_info_to_json(model_path, json_filename):
     # Save the data to a JSON file
     with open(json_filename, 'w') as f:
         json.dump(data, f)
+
+
+
+
+
+# Example usage
 
 if __name__ == "__main__":
     save_model_info_to_json("./NNVct/Application/backend/model_TF.onnx", "./NNVct/Application/backend/model_TF.json")

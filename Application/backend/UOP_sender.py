@@ -4,6 +4,7 @@ from onnx import numpy_helper
 
 from universal_onnx_parser import extract_model_info
 
+
 def extract_activation_names(layers):
     activation_names = []
 
@@ -23,6 +24,7 @@ def extract_activation_names(layers):
         else:
             activation_names.append('')
 
+
     return activation_names
 
 
@@ -40,6 +42,7 @@ def extract_layer_names(layers):
 
         layer_names.append(layer_name)
 
+
     return layer_names
 
 
@@ -56,8 +59,14 @@ def extract_weights(model_path):
         weights.append(weight)
         print(weight.shape)
 
+
     return weights
 
+
+
+
+
+# Testing
 
 if __name__ == "__main__":
     # TF
