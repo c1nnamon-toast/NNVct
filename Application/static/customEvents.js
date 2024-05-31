@@ -7,7 +7,7 @@ export function initializeCustomEvents(cy) {
         let currentTime = new Date().getTime();
         let tapInterval = currentTime - lastTap;
         
-        if (tapInterval < 300 && tapInterval > 0) { // Check for double tap
+        if (tapInterval < 225 && tapInterval > 0) { // Check for double tap
             clearTimeout(timeout); // Prevent singleTap from firing
             tappedNow.emit('doubleTap', event); // Emit custom doubleTap event
             lastTap = 0; // Reset lastTap
@@ -15,7 +15,7 @@ export function initializeCustomEvents(cy) {
             // Use a timeout to delay the singleTap action, allowing for a potential second tap
             timeout = setTimeout(() => {
                 tappedNow.emit('singleTap', event); // Emit custom singleTap event if no subsequent tap occurs
-            }, 300);
+            }, 225);
             lastTap = currentTime;
         }
     });

@@ -1,6 +1,4 @@
 import json
-import os
-import random
 from math import ceil 
 
 
@@ -13,6 +11,7 @@ def getLayers(model_path):
 
     smort = [['input', '', 0, model_data['Layers'][0][2]]] # Include input layer
     smort.extend(model_data['Layers'])
+
 
     return smort
 
@@ -46,6 +45,7 @@ def process_node(path, node_id):
     neuron_weights = model_data['Weights'][layer_index][neuron_index]
     activation_function = model_data['Activation functions'][activation_index][1]
 
+
     return neuron_weights, activation_function
 
 
@@ -71,69 +71,13 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
     max_possible_nodes = max([x[3] for x in smort])
     phi = containerHeight/max_nodes_on_screen
 
-
-    #Nodes
-    for i, layer_info in enumerate(smort):
-        layer_name, layer_type, in_features, out_features = layer_info
-
-        for j in range(out_features):
-            node_id = f'{layer_name}_{j}'
-            if((i + left) == 1):
-                node_id = f'input_{j}'
-
-            nodeWidth = int(layerWidth*i + layerWidth / 2);
-            nodeHeight = int(phi*(max_possible_nodes - out_features)/2 + phi*j)
-
-            #print(phi*(max_possible_nodes - out_features)/2 + phi*j)
-
-            nodes.append({
-                'group': 'nodes',
-                'grabbable': False, 
-                'position': {
-                    'x': nodeWidth,
-                    'y': nodeHeight,
-                },
-                'data': {
-                    'id': node_id,
-                    'layer': layer_name,
-                    'type': layer_type
-                }
-            })
-
+    # Nodes
+    create_nodes(nodes, smort, layerWidth, max_possible_nodes, phi, full=False, left=left)
 
     # Edges
-    for i in range(right - left): 
-    # not right - left + 1 because there are 1 less "edge layers" than actuall layers
-        source_layer_info = smort[i]
-        target_layer_info = smort[i + 1]
-        for source_node_index in range(source_layer_info[3]):
-            for target_node_index in range(target_layer_info[3]):
-                edge_id = f'edge_{source_layer_info[0]}_{source_node_index}-to-{target_layer_info[0]}_{target_node_index}'
-                source_id = f'{source_layer_info[0]}_{source_node_index}'
-                target_id = f'{target_layer_info[0]}_{target_node_index}'
+    create_edges(edges, smort, right - left + 1, model_data, full=False, left=left)
 
-                #weight = random.uniform(-1, 1)
-                print(left, right, left+i, target_node_index, source_node_index)
-                weight = model_data['Weights'][left + i - 1][target_node_index][source_node_index]
-                opacity = abs(weight*0.8)  # Normalize weights
-                edge_color = 'green' if weight > 0 else 'red'
-                edge_gradient = '#94dc79 #68c981 #42b588 #239f8a' if (edge_color == 'green') else '#9e00b8 #df0072 #ff0000' # green & red
 
-                edges.append({
-                'group': 'edges',
-                'data': {
-                    'id': edge_id,
-                    'source': source_id,
-                    'target': target_id,
-                    #'weight': weight,
-
-                    'lineColor': edge_color,
-                    'lineGradient': edge_gradient,
-                    'opacity': opacity  # Add opacity to the edge data
-                }
-                })
-
-    
     return {'nodes': nodes, 'edges': edges}
 
 
@@ -156,15 +100,30 @@ def loadfullNN(model_path, containerWidth, containerHeight):
     phi = containerHeight/max_nodes_on_screen
 
 
-    #Nodes
+    # Nodes
+    create_nodes(nodes, smort, layerWidth, max_possible_nodes, phi, full=True)
+    
+    # Edges
+    create_edges(edges, smort, total_layers, model_data, full=True)
+
+
+    return {'nodes': nodes, 'edges': edges}
+
+
+
+def create_nodes(nodes, smort, layerWidth, max_possible_nodes, phi, full, left=None):
     for i, layer_info in enumerate(smort):
         layer_name, layer_type, in_features, out_features = layer_info
 
         for j in range(out_features):
-            #print(j, i, layer_info)
-            node_id = f'{layer_name}_{j}';
-            if(i == 0):
-                node_id = f'input_{j}'
+            node_id = f'{layer_name}_{j}'
+            if(full):
+                if(i == 0):
+                    node_id = f'input_{j}'
+            else:
+                if((i + left) == 1):
+                    node_id = f'input_{j}'
+            
 
             nodeWidth = int(layerWidth*i + layerWidth / 2);
             nodeHeight = int(phi*(max_possible_nodes - out_features)/2 + phi*j)
@@ -184,9 +143,10 @@ def loadfullNN(model_path, containerWidth, containerHeight):
                     'type': layer_type
                 }
             })
-    
 
-    #Edges
+
+
+def create_edges(edges, smort, total_layers, model_data, full, left=None):
     for i in range(0, total_layers - 1):
                
         source_layer_info = smort[i]
@@ -197,7 +157,10 @@ def loadfullNN(model_path, containerWidth, containerHeight):
                 edge_id = f'edge_{source_layer_info[0]}_{source_node_index}-to-{target_layer_info[0]}_{target_node_index}'
                 source_id = f'{source_layer_info[0]}_{source_node_index}'
                 target_id = f'{target_layer_info[0]}_{target_node_index}'
-                weight = model_data['Weights'][i][target_node_index][source_node_index]
+                if(full):
+                    weight = model_data['Weights'][i][target_node_index][source_node_index]
+                else:
+                    weight = model_data['Weights'][left + i - 1][target_node_index][source_node_index]
                 # weight = random.uniform(-1, 1)
 
                 opacity = abs(weight*0.8)  # abs for negative weights
@@ -217,6 +180,3 @@ def loadfullNN(model_path, containerWidth, containerHeight):
                     'opacity': opacity  # Add opacity to the edge data
                 }
                 })
-
-
-    return {'nodes': nodes, 'edges': edges}

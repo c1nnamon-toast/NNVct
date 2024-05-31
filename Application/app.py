@@ -7,7 +7,6 @@ import numpy as np
 from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node
 
 PATH = "C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_TF.json"
-#PATH = 'C:/Users/Miguel/Documents/VNV/NNVct/Application/backend/model_info.json'
 
 app = Flask(__name__)
 app.secret_key = 'dripus'

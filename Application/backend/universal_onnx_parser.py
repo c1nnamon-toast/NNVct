@@ -6,13 +6,7 @@ from NNVct.Application.backend.UOP_loadinfo import extract_model_info
 
 def extract_layers_info(layers):
     """
-    Extracts simplified layer names and their corresponding activation function names from a list of layers.
-
-    Parameters:
-    - layers (List[Tuple[str, str]]): A list of tuples, where each tuple contains a layer identifier and its activation function.
-    
-    Returns:
-    - List[Tuple[str, str]]: A list of tuples, where each tuple contains the simplified layer name and the normalized activation function name.
+    Extracts names of layers and their corresponding activation functions.
     """
     layer_and_activation_info = []
     for layer in layers:
@@ -38,11 +32,7 @@ def extract_layers_info(layers):
 
 def extract_weights(model_path):
     """
-    Loads an ONNX model and extracts all the weight tensors as numpy arrays.\n
-    Parameters:
-    - model_path (str): The file path to the ONNX model.\n
-    Returns:
-    - List[np.ndarray]: A list of numpy arrays, each representing the weights for a layer in the model.
+    Loads an ONNX model and extracts all the weight tensors as numpy arrays.    
     """
     model = onnx.load(model_path)
     weights = []

@@ -3,18 +3,7 @@ import re
 
 def extract_model_info(model_path):
     """
-    Extracts names of layers and their corresponding activation functions based on the provided ONNX model. *Doesn't extract weights*
-
-    Reads an ONNX model from the given file path and extracts a list of layer names paired with their associated activation functions, if any. 
-    The activation functions are identified based on a predefined list of activation function names stored in a text file. 
-
-    Parameters:
-    - model_path (str): The file path to the ONNX model.
-
-    Returns:
-    - List[Tuple[str, str]]: A list of tuples, where each tuple contains:
-        - The name of the layer.
-        - The name of the activation function associated with the layer; an empty string if none.
+    Extracts names of layers and their corresponding activation functions based on the provided ONNX model. *Doesn't extract weights
     """
     """
     Notes:
@@ -23,6 +12,7 @@ def extract_model_info(model_path):
       their index (e.g., "_1"). Pytorch (PT) models are known to have such naming conventions.
     - The activation function names are expected to be in lowercase in the 'activation_functions.txt' file.
     - Weight extraction is avoided due to the complexity of the output structure and the potential size of the weights.
+    - The activation functions are identified based on a predefined list of activation function names stored in a text file. 
     """
     model = onnx.load(model_path)
 
