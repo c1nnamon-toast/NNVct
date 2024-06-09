@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Store the data in LocalStorage
             localStorage.setItem('processedData', JSON.stringify(data));
             // Redirect to the focusedLayout page
-            window.location.href = '/focusedLayout';
+            window.location.href = '/sincoLayout';
         });
     });
 
@@ -98,8 +98,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
 
 
-// // Reset the view
-// document.getElementById('resetView').addEventListener('click', function () {
-//     cy.fit();
-// });
+    // Reset the view
+    document.getElementById('resetView').addEventListener('click', function () {
+        cy.zoom(1); 
+        cy.pan({ x: 0, y: 0 }); // Resets pan to the origin (0,0)
+    });
 });

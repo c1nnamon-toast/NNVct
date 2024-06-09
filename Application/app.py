@@ -56,9 +56,9 @@ def process_node_for_focused_layout():
 
 
 
-@app.route('/focusedLayout')
+@app.route('/sincoLayout')
 def focused_layout():
-    return render_template('focused_layout.html')
+    return render_template('sinco_layout.html')
 
 
 
@@ -96,7 +96,7 @@ def api_activation(node_id):
 @app.route('/visualizeActivation/<node_id>')
 def visualize_activation(node_id):
 
-    return render_template('activation_visualization.html', node_id=node_id)
+    return render_template('focused_layout.html', node_id=node_id)
 
 
 

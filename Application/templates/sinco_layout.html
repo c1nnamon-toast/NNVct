@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abstract Layout</title>
+    <title>Focused Layout</title>
     <script src="https://unpkg.com/cytoscape@3.18.1/dist/cytoscape.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
@@ -13,18 +13,15 @@
     <div id="buttons">
         <button id="toggleScrollZoom">Toggle Scroll/Zoom</button>
         <button id="resetView">Reset View</button>
-        <!-- <button id="manualInput">Manual Input</button> -->
-        <button id="fullNN">Show full network</button>
+        <button id="returnMainNode">Return to Abstract Layout</button>   
     </div>
+    
+    <div id="cy"></div>     
 
-    <div id="cy"></div>
+    <script type="module" src="{{ url_for('static', filename='sinco_layout.js') }}"></script>
+    <script src="{{ url_for('static', filename='main_layout_styles.js') }}"></script>
 
-
-    <script src="{{ url_for('static', filename='abstract_layout.js') }}"></script>
-    <script type="application/json" id="elementsData">
-        {{ elements|tojson }}
-    </script>
-    <script src="{{ url_for('static', filename='abstract_layout_styles.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='focused_layoutStyles.js') }}"></script> -->
     <!-- <script src="{{ url_for('static', filename='static/abstract_layout.js') }}"></script> -->
     <!-- <script src="{{ url_for('static', filename='abstract_layout/cySetup.js') }}"></script>
     <script src="{{ url_for('static', filename='abstract_layout/main.js') }}"></script> -->

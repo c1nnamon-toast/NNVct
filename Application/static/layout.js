@@ -11,7 +11,7 @@ var cy = cytoscape({
     zoomingEnabled: false
 });
 
-import { initializeCustomEvents } from './customEvents.js';
+import { initializeCustomEvents } from './custom_events.js';
 initializeCustomEvents(cy);
 
 

@@ -1,30 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focused Layout</title>
-    <script src="https://unpkg.com/cytoscape@3.18.1/dist/cytoscape.min.js"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Activation Visualization</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        #weightsDisplay {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+            height: 200px;
+            font-family: monospace;
+        }
+    </style>
 </head>
-
 <body>
-    <div id="buttons">
-        <button id="toggleScrollZoom">Toggle Scroll/Zoom</button>
-        <button id="resetView">Reset View</button>
-        <button id="returnMainNode">Return to Abstract Layout</button>   
-    </div>
-    
-    <div id="cy"></div>     
+    <div id="ActivationFunctionGraph"></div>
+
+    <!-- Input to enter a number -->
+    <input type="number" id="nodeValueInput" placeholder="Enter a value" style="margin-top: 10px;">
+    <button onclick="updateGraph()">Plot</button>
+
+    <div id="weightsDisplay"></div>
 
     <script type="module" src="{{ url_for('static', filename='focused_layout.js') }}"></script>
-    <script src="{{ url_for('static', filename='mainLayoutStyles.js') }}"></script>
-
-    <!-- <script src="{{ url_for('static', filename='focused_layoutStyles.js') }}"></script> -->
-    <!-- <script src="{{ url_for('static', filename='static/abstract_layout.js') }}"></script> -->
-    <!-- <script src="{{ url_for('static', filename='abstract_layout/cySetup.js') }}"></script>
-    <script src="{{ url_for('static', filename='abstract_layout/main.js') }}"></script> -->
 </body>
-
 </html>
