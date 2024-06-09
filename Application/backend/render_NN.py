@@ -6,9 +6,6 @@ def getLayers(model_path):
     with open(model_path, 'r') as json_file:
         model_data = json.load(json_file)
     
-    nodes = []
-    edges = []
-
     smort = [ ['input', '', 0, model_data['Layers'][0][2], ''] ] # Include input layer
     smort.extend(model_data['Layers'])
 

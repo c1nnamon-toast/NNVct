@@ -2,15 +2,16 @@ Non-visual changes:
 !  : Fully connected layer doubled edges
    : Add bias support   
    : Add user input on the page   
-
+   : Relative sizes of purples
+   : Redo abstract layout nodes positioning
+   : Change the naming of focused and sinco layouts 
 
 Visual changes:
 !! : Something is off with NN centering
-!  : Interchangeable color option (default and gradient) 
 !  : Fully connected layer doubled edges
    : Find a better way to highlight the hovered node and its adjacent edges
+   : Relative sizes of purples
 +- : Find the best way to place purples (currently automated) 
-+  : Render 5(3, 4) layers when clicking on purples
 
 
 Suggestions:

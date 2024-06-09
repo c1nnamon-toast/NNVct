@@ -5,10 +5,11 @@ from flask import Flask, render_template, jsonify, request
 from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node
 from backend.UOP_to_json import save_model_to_json
 
+app = Flask(__name__)
+
+
 ONNXPATH = "./Application/backend/model.onnx"
 
-app = Flask(__name__)
-app.secret_key = 'dripus'
 
 @app.route('/abstractLayout')
 def abstract_layout():
@@ -18,14 +19,14 @@ def abstract_layout():
     #layers = 150
     layers = len(model_data['Layers']) + 1
     layersInfo = getLayers(PATH)
-    neuronnumbers = [x[3] for x in layersInfo]
-    max_neurons = max(neuronnumbers);
-    
+    neurons_counts = [x[3] for x in layersInfo]
+    max_neurons = max(neurons_counts);
+
     nodes = [{"data":   {
                         "id": f"layer_{i}", 
                         "label": f"Layer {i}", 
-                        "width": int(max(0.2, neuronnumbers[i]/max_neurons)*100/2),
-                        "height": int(max(0.2, neuronnumbers[i]/max_neurons)*100),
+                        "width": int(max(0.2, neurons_counts[i]/max_neurons)*100/2),
+                        "height": int(max(0.2, neurons_counts[i]/max_neurons)*100),
                         }} for i in range(layers)]
     edges = [{"data":   {
                         "source": f"layer_{i}", 
