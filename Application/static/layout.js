@@ -21,7 +21,8 @@ initializeCustomEvents(cy);
 
 document.getElementById('generateGraph').addEventListener('click', generateGraph);
 
-function generateGraph() {
+function generateGraph() 
+{
     var startTime = performance.now();
 
     fetch('/layout', {
@@ -143,6 +144,10 @@ cy.on('singleTap', 'node', function(evt) {
 cy.on('doubleTap', 'node', function(evt) {
     var node = evt.target;
     var nodeId = node.id();
+    // var hasIncomingEdges = node.connectedEdges(function(el) {
+    //     return el.target().id() === node.id();
+    // }).length > 0;
+
     fetch('/api/activation/' + nodeId)
         .then(response => response.json())
         .then(data => {

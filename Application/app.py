@@ -33,7 +33,7 @@ def abstract_layout():
                         "target": f"layer_{i+1}"
                         }} for i in range(layers - 1)]
     
-    print(nodes);
+    # print(nodes);
 
     return render_template('abstract_layout.html', elements={"nodes": nodes, "edges": edges})
 
@@ -86,7 +86,7 @@ def layout():
 
 @app.route('/api/activation/<node_id>')
 def api_activation(node_id):
-    if "input" in node_id.lower():
+    if ("input" in node_id.lower()):
         return jsonify(proceed=False, message="Stay on current page")
     else:
         model_info_path = PATH

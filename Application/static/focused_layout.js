@@ -1,7 +1,7 @@
+import { initializeCustomEvents } from './customEvents.js';
 document.addEventListener('DOMContentLoaded', function() 
 {   
     // Cy
-
     var cy = cytoscape({
         container: document.getElementById('cy'),
         style: cytoscapeStyles,
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function()
         wheelSensitivity: 0.3,
         zoomingEnabled: false
     });
-    
+    initializeCustomEvents(cy);
     // import { initializeCustomEvents } from './customEvents.js';
     // initializeCustomEvents(cy);
 
@@ -31,39 +31,39 @@ document.addEventListener('DOMContentLoaded', function()
     }
     
 
-    // // Double tap action
+    // Double tap action
 
-    // // Fetch and redirect or perform other actions
-    // // Listen for the custom 'doubleTap' event to handle double clicks
-    // // Listen for custom 'singleTap' event for focusing on the node
-    // cy.on('singleTap', 'node', function(evt) {
-    //     var node = evt.target;
-    //     // Focus on the node (center and default zoom)
-    //     cy.animate({
-    //         center: { eles: node },
-    //         zoom: 1
-    //     }, {
-    //         duration: 250
-    //     });
-    // });
+    // Fetch and redirect or perform other actions
+    // Listen for the custom 'doubleTap' event to handle double clicks
+    // Listen for custom 'singleTap' event for focusing on the node
+    cy.on('singleTap', 'node', function(evt) {
+        var node = evt.target;
+        // Focus on the node (center and default zoom)
+        cy.animate({
+            center: { eles: node },
+            zoom: 1
+        }, {
+            duration: 250
+        });
+    });
 
-    // // Listen for custom 'doubleTap' event to fetch data and potentially redirect
-    // cy.on('doubleTap', 'node', function(evt) {
-    //     var node = evt.target;
-    //     var nodeId = node.id();
-    //     fetch('/api/activation/' + nodeId)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             if (data.proceed) {
-    //                 // Redirect to the visualization page if API allows proceeding
-    //                 window.location.href = '/visualizeActivation/' + nodeId;
-    //             } else {
-    //                 // Handle the situation where no redirection is needed
-    //                 console.log(data.message); // Optionally display this message in the UI
-    //             }
-    //         })
-    //         .catch(error => console.error('Error:', error));
-    // });
+    // Listen for custom 'doubleTap' event to fetch data and potentially redirect
+    cy.on('doubleTap', 'node', function(evt) {
+        var node = evt.target;
+        var nodeId = node.id();
+        fetch('/api/activation/' + nodeId)
+            .then(response => response.json())
+            .then(data => {
+                if (data.proceed) {
+                    // Redirect to the visualization page if API allows proceeding
+                    window.location.href = '/visualizeActivation/' + nodeId;
+                } else {
+                    // Handle the situation where no redirection is needed
+                    console.log(data.message); // Optionally display this message in the UI
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
 
 
     // Handles the scrolling mechanism
