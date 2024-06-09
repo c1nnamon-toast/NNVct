@@ -1,8 +1,6 @@
 import time
 import json
-import os
-from flask import Flask, render_template, jsonify, request, session
-import numpy as np
+from flask import Flask, render_template, jsonify, request
 
 from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node
 
