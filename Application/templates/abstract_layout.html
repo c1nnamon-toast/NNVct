@@ -13,12 +13,14 @@
     <div id="buttons">
         <button id="toggleScrollZoom">Toggle Scroll/Zoom</button>
         <button id="resetView">Reset View</button>
-        <!-- <button id="manualInput">Manual Input</button> -->
+
         <button id="fullNN">Show full network</button>
+        <!-- <input type="file" id="onnxFileInput" name="onnxfile" accept=".onnx" style="display: none;">
+        <button id="loadONNXButton">Load ONNX File</button>
+        <div id="uploadMessage"></div> -->
     </div>
 
     <div id="cy"></div>
-
 
     <script src="{{ url_for('static', filename='abstract_layout.js') }}"></script>
     <script type="application/json" id="elementsData">
