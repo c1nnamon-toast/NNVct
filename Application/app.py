@@ -3,8 +3,9 @@ import json
 from flask import Flask, render_template, jsonify, request
 
 from backend.render_NN import loadfullNN, loadNNpartially, getLayers, process_node
+from backend.UOP_to_json import save_model_to_json
 
-PATH = "./Application/backend/model_TF.json"
+ONNXPATH = "./Application/backend/model.onnx"
 
 app = Flask(__name__)
 app.secret_key = 'dripus'
@@ -99,4 +100,7 @@ def visualize_activation(node_id):
 
 
 if __name__ == '__main__':
+    PATH = "./Application/backend/model.json"
+    save_model_to_json(ONNXPATH, PATH)
+
     app.run(debug=True)

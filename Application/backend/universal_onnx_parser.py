@@ -1,7 +1,7 @@
 import re
 import onnx
 from onnx import numpy_helper
-from NNVct.Application.backend.UOP_loadinfo import extract_model_info
+from backend.UOP_loadinfo import extract_model_info
 
 
 def extract_layers_info(layers):

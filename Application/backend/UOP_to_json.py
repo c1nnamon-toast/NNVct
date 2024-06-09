@@ -1,5 +1,6 @@
 import json
-from NNVct.Application.backend.universal_onnx_parser import extract_model_info, extract_layers_info, extract_weights
+from backend.UOP_loadinfo import extract_model_info
+from backend.universal_onnx_parser import extract_layers_info, extract_weights
 
 
 def format_layer_info(layer_name, activation_name, weight):
@@ -59,5 +60,4 @@ def save_model_to_json(model_path, json_filename):
 
 # Testing
 if __name__ == "__main__":
-    save_model_to_json("./NNVct/Application/backend/model_TF.onnx", "./NNVct/Application/backend/model_TF_test.json")
-    # save_model_to_json ("./NNVct/Application/backend/model_PT.onnx", "./NNVct/Application/backend/model_PT.json")
+    save_model_to_json("./NNVct/Application/backend/model.onnx", "./NNVct/Application/backend/model.json")

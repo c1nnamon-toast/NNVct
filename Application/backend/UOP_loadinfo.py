@@ -2,9 +2,7 @@ import onnx
 import re
 
 def extract_model_info(model_path):
-    """
-    Extracts names of layers and their corresponding activation functions based on the provided ONNX model. *Doesn't extract weights
-    """
+    """ Extracts names of layers and their corresponding activation functions based on the provided ONNX model. *Doesn't extract weights """
     """
     Notes:
     - The function assumes that activation functions are specified as the last part of the node name in the model's graph.
@@ -20,7 +18,7 @@ def extract_model_info(model_path):
     layers = []
 
     # File of considered activation functions, (to lower case)  
-    with open('./NNVct/Application/backend/activation_functions.txt', 'r') as f:
+    with open('./Application/backend/activation_functions.txt', 'r') as f:
         activations = [line.strip().lower() for line in f]
 
     previous_layer = None
@@ -80,4 +78,5 @@ def PT():
 if __name__ == "__main__":
     TF()
     # PT()
+    pass
 

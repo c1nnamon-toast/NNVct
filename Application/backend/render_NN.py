@@ -9,7 +9,7 @@ def getLayers(model_path):
     nodes = []
     edges = []
 
-    smort = [['input', '', 0, model_data['Layers'][0][2]]] # Include input layer
+    smort = [ ['input', '', 0, model_data['Layers'][0][2], ''] ] # Include input layer
     smort.extend(model_data['Layers'])
 
 
@@ -32,21 +32,40 @@ def process_node(path, node_id):
             layer_index = i
             break
 
-    # Find the index of the given activation
-    activation_index = None
-    for i, activation_data in enumerate(model_data['Activation functions']):
-        if activation_data[0] == layer:
-            activation_index = i
-            break
-
-    if activation_index is None:
-        return {'error': 'Activation not found'}
-
     neuron_weights = model_data['Weights'][layer_index][neuron_index]
-    activation_function = model_data['Activation functions'][activation_index][1]
+    activation_function = model_data['Layers'][layer_index][4]
 
 
     return neuron_weights, activation_function
+
+
+
+def loadfullNN(model_path, containerWidth, containerHeight):
+    with open(model_path, 'r') as json_file:
+        model_data = json.load(json_file)
+    
+    nodes = []
+    edges = []
+
+    smort = [ ['input', '', 0, model_data['Layers'][0][2], ''] ] # Include input layer
+    smort.extend(model_data['Layers'])
+    # print(smort)
+    total_layers = len(smort) 
+
+    layerWidth = containerWidth / total_layers 
+    max_nodes_on_screen = 13 # something is off with calculations
+    max_possible_nodes = max([x[3] for x in smort])
+    phi = containerHeight/max_nodes_on_screen
+
+
+    # Nodes
+    create_nodes(nodes, smort, layerWidth, max_possible_nodes, phi, full=True)
+    
+    # Edges
+    create_edges(edges, smort, total_layers, model_data, full=True)
+
+
+    return {'nodes': nodes, 'edges': edges}
 
 
 
@@ -57,7 +76,7 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
     nodes = []
     edges = []
 
-    smort = [['input', '', 0, model_data['Layers'][0][2]]] # Include input layer
+    smort = [ ['input', '', 0, model_data['Layers'][0][2], ''] ] # Include input layer
     smort.extend(model_data['Layers'])
 
     left, right = max(1, centerlayer - int((layers - 1) / 2)), min(centerlayer + ceil((layers - 1) / 2), len(smort))
@@ -82,38 +101,9 @@ def loadNNpartially(model_path, containerWidth, containerHeight, centerlayer, la
 
 
 
-def loadfullNN(model_path, containerWidth, containerHeight):
-    with open(model_path, 'r') as json_file:
-        model_data = json.load(json_file)
-    
-    nodes = []
-    edges = []
-
-    smort = [['input', '', 0, model_data['Layers'][0][2]]] # Include input layer
-    smort.extend(model_data['Layers'])
-
-    total_layers = len(smort) 
-
-    layerWidth = containerWidth / total_layers
-    max_nodes_on_screen = 13 # something is off with calculations
-    max_possible_nodes = max([x[3] for x in smort])
-    phi = containerHeight/max_nodes_on_screen
-
-
-    # Nodes
-    create_nodes(nodes, smort, layerWidth, max_possible_nodes, phi, full=True)
-    
-    # Edges
-    create_edges(edges, smort, total_layers, model_data, full=True)
-
-
-    return {'nodes': nodes, 'edges': edges}
-
-
-
 def create_nodes(nodes, smort, layerWidth, max_possible_nodes, phi, full, left=None):
     for i, layer_info in enumerate(smort):
-        layer_name, layer_type, in_features, out_features = layer_info
+        layer_name, layer_type, in_features, out_features, act_fun = layer_info
 
         for j in range(out_features):
             node_id = f'{layer_name}_{j}'
