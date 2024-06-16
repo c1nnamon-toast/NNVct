@@ -36,9 +36,9 @@ def extract_weights(model_path):
     """
     model = onnx.load(model_path)
     weights = []
-    for initializer in model.graph.initializer:
+    for initializer in model.graph.initializer[::-1]:
         weight = numpy_helper.to_array(initializer)
-        weights.append(weight)
+        weights.append(weight.T)
         # print(weight.shape)
 
 
@@ -51,7 +51,7 @@ def extract_weights(model_path):
 # Testing
 
 if __name__ == "__main__":
-    path = "./NNVct/Application/backend/model_TF.onnx"
+    path = "./Application/backend/model.onnx"
     layers = extract_model_info(path)
     layer_and_activation_info = extract_layers_info(layers)
     weights = extract_weights(path)

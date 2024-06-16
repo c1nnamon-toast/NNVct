@@ -42,6 +42,7 @@ def save_model_to_json(model_path, json_filename):
         layer_info, weight_info = format_layer_info(layer_name, activation_name, weight)
         layers_info.append(layer_info)
         weights_info.append(weight_info)
+        # print(len(weight_info))
 
     # Prepare the data for the JSON file
     data = {

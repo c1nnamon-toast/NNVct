@@ -57,10 +57,10 @@ def extract_model_info(model_path):
 
 # TF usage example
 def TF():
-    layers = extract_model_info("./NNVct/Application/backend/model_TF.onnx")
+    layers = extract_model_info("./Application/backend/model.onnx")
 
     # Fancy printing
-    print(f"Model Information for ./NNVct/Application/backend/model_TF.onnx:\n")
+    print(f"Model Information for ./Application/backend/model.onnx:\n")
     print("Layers:")
     for i, layer in enumerate(layers):
         print(f"Layer {i + 1}:   {layer[0]},   {layer[1] if layer[1] else 'None'}")
