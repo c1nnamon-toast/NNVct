@@ -3,10 +3,10 @@ Non-visual changes:
    : Add bias support   
    : Add user input on the page   
    : Relative sizes of purples
-   : Redo abstract layout nodes positioning
-!  : Change the naming of focused and sinco layouts 
+   : Redo abstract layout nodes positioning 
 !  : Add time load measurements to all pages
 !  : Transfer files names to snake_case
+!  : Cache the abstarct layout
 
 Visual changes:
 !! : Something is off with NN centering

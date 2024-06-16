@@ -5,7 +5,6 @@ import onnx
 
 # Not possible to use classes due to subclassing, function is used instead
 def create_model():
-    # Define the model using Functional API
     inputs = tf.keras.Input(shape=(2,))
     x = layers.Dense(4, activation='relu')(inputs)
     x = layers.Dense(6, activation='sigmoid')(x)

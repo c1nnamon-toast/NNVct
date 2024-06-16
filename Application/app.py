@@ -24,7 +24,7 @@ def abstract_layout():
 
     nodes = [{"data":   {
                         "id": f"layer_{i}", 
-                        "label": f"Layer {i}", 
+                        "label": f"{layersInfo[i][0]}", 
                         "width": int(max(0.2, neurons_counts[i]/max_neurons)*100/2),
                         "height": int(max(0.2, neurons_counts[i]/max_neurons)*100),
                         }} for i in range(layers)]
