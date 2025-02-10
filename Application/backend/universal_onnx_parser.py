@@ -48,8 +48,7 @@ def extract_weights(model_path):
 
 
 
-# Testing
-
+# --------------------  Testing  --------------------
 if __name__ == "__main__":
     path = "./Application/backend/model.onnx"
     layers = extract_model_info(path)

@@ -53,8 +53,8 @@ def extract_model_info(model_path):
 
 
 
-# Testing
 
+# --------------------  Testing  --------------------
 # TF usage example
 def TF():
     layers = extract_model_info("./Application/backend/model.onnx")
@@ -75,8 +75,8 @@ def PT():
     for i, layer in enumerate(layers):
         print(f"Layer {i + 1}:   {layer[0]},   {layer[1] if layer[1] else 'None'}")
 
+
 if __name__ == "__main__":
-    TF()
+    # TF()
     # PT()
     pass
-

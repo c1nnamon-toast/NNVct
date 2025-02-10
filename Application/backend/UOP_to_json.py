@@ -58,7 +58,6 @@ def save_model_to_json(model_path, json_filename):
 
 
 
-
-# Testing
+# --------------------  Testing  --------------------
 if __name__ == "__main__":
     save_model_to_json("./NNVct/Application/backend/model.onnx", "./NNVct/Application/backend/model.json")
