@@ -7,6 +7,10 @@ Non-visual changes:
 !  : Add time load measurements to all pages
 !  : Transfer files names to snake_case
 !  : Cache the abstarct layout
+!  : change w(i, j) to w(j, i)
+!  : create diagram of programs flow
+!  : backend separate folder for data
+!  : test convertion of the "same" model in  tensorflow,  pytorch,  scikit-learn  to  onnx
 
 Visual changes:
 !! : Something is off with NN centering

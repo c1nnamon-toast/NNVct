@@ -1,7 +1,7 @@
 import { initializeCustomEvents } from './custom_events.js';
 document.addEventListener('DOMContentLoaded', function() 
 {   
-    // Cy
+// Cy
     var cy = cytoscape({
         container: document.getElementById('cy'),
         style: cytoscapeStyles,
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function()
     }
     
 
-    // Double tap action
+// Double tap action
 
     // Fetch and redirect or perform other actions
     // Listen for the custom 'doubleTap' event to handle double clicks
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function()
     });
 
 
-    // Handles the scrolling mechanism
+// Handles the scrolling mechanism
 
     let scrollMode = true; // Default mode is scroll
     var isScrolling = false;
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function()
 
 
 
-    // Hover over node
+// Hover over node
 
     cy.on('mouseover', 'node', function(event) {
         if (!isScrolling) {
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function()
 
 
 
-    // Return to main node
+// Return to main node
 
     document.getElementById('returnMainNode').addEventListener('click', function () {
         window.location.href = "/abstractLayout";
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function()
       
 
 
-    // Reset the view
+// Reset the view
     document.getElementById('resetView').addEventListener('click', function () {
         cy.zoom(1); 
         cy.pan({ x: 0, y: 0 }); // Resets pan to the origin (0,0)
