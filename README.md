@@ -1,12 +1,6 @@
 # NNVct
 Neural Network Visualizer 
 
-- install all libraries from requirements.txt
-- run ./Application/app.py from root directory
-- go to http://127.0.0.1:5000/abstractLayout
-
-- NNVct can open any* (supported) nn in .onnx file
-
 Abstract Layout of the Network
 ![Abstract Layout of the Network](image.png)
 
@@ -20,3 +14,12 @@ User can look at the insides of each individual neuron
 ![alt text](image-3.png)
 
 Currently NNVCt is limited to FFNNs, but the projects stucture allows further modifications and additions
+
+
+#### Setup
+
+- install all libraries from requirements.txt
+- run ./Application/app.py from root directory
+- go to http://127.0.0.1:5000/abstractLayout
+
+- NNVct can open any* (supported) nn in .onnx file
